@@ -11,7 +11,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(),
+      body: Stack(children: <Widget>[]),
     );
   }
+  // feature games classes
+  @override
+  // TODO: implement widget
+  HomePage get widget => super.widget;
 }
