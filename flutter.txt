@@ -1,0 +1,32 @@
+
+/**
+ * types of widget (component): it is component in react and is more of function: however in flutter widget is class but serves same functionality to similar to component in react.
+ * 1. StatelessWidget
+ * 2. StatefullWidget
+ * 3. InheritedWidget
+ * 
+ * in terms of UI related stuff there are two widget: StatelessWidget and statefulWidget
+
+ * widget is the appearance of UI it functionality, behavior etc
+
+ * state (data) which determine how your  widget should look like, should render, behaves
+ 
+ * the StatelessWidget (state immutable) is a static widget in which it functionality does not change 
+
+* while statefullWidget has a dynamic functionality it does change when event act on it (state mutable).
+
+* @override is a method of redefining an abstract class where developer defined their own costume behavior for their app
+ */
+
+MyApp class is the main component where all the functionality can be placed then call the instances in the main.
+
+void main(){
+ // with runApp function
+	runApp(MyApp())	
+}
+
+key helps flutter app to identify and differentiate between widget
+
+flutter design standard by industry requirement
+1. Material design: this design system was created by google (android)
+2. Cupertino design: this design system created by app (iOS)

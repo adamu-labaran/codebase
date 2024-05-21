@@ -12,7 +12,7 @@ class Game {
   String description;
   String studio;
 
-  Game(this.title, this.coverImage, this.description, this.studio);
+  Game(this.title, this.coverImage, this.images, this.description, this.studio);
 }
 
 List<Game> games = [
@@ -21,6 +21,7 @@ List<Game> games = [
     GameImage(
         "https://www.wallpaperflare.com/static/734/272/885/horizon-zero-dawn-playstation-4-logo-aloy-horizon-zero-dawn-wallpaper.jpg",
         ""),
+    [],
     "",
     "Guerrilla Games",
   ),
@@ -29,6 +30,7 @@ List<Game> games = [
     GameImage(
         "https://assets1.ignimgs.com/2018/12/14/metro-exodus---button-1544750418985.jpg",
         ""),
+    [],
     "",
     "4A Games",
   ),
@@ -37,6 +39,7 @@ List<Game> games = [
     GameImage(
         "https://cdn.division.zone/uploads/2019/03/tc-the-division-2-preload-start-times-sizes-header.jpg",
         ""),
+    [],
     "",
     "Massive Entertainment",
   ),
@@ -45,6 +48,7 @@ List<Game> games = [
     GameImage(
         "https://media.playstation.com/is/image/SCEA/resident-evil-2-box-art-01-ps4-us-12dec18?\$native_nt\$",
         ""),
+    [],
     "",
     "Capcom",
   ),
@@ -56,12 +60,14 @@ List<Game> games2 = [
     GameImage(
         "https://gpstatic.com/acache/26/25/1/uk/packshot-7136bdab871d6b2c8f07ccc9ad33b4d0.jpg",
         ""),
+    [],
     "",
     "Rockstar Games",
   ),
   Game(
     "The Last of Us Part II",
     GameImage("https://mvpo.us/img/P6253.jpg", ""),
+    [],
     "",
     "Naughty Dog",
   ),
@@ -70,6 +76,7 @@ List<Game> games2 = [
     GameImage(
         "https://onlysp.escapistmagazine.com/wp-content/uploads/2019/03/Sekiro-Shadows-Die-Twice-logo-art.jpg",
         ""),
+    [],
     "",
     "From Software",
   ),
@@ -78,6 +85,7 @@ List<Game> games2 = [
     GameImage(
         "https://s3.gaming-cdn.com/images/products/2666/orig/just-cause-4-cover.jpg",
         ""),
+    [],
     "",
     "Avalanche Studios",
   ),
@@ -89,6 +97,7 @@ List<Game> featuredGames = [
     GameImage(
         "https://content.totalwar.com/total-war/com.totalwar.www2019/uploads/2019/03/08145252/2.jpg",
         ""),
+    [],
     "",
     "Feral Interactive",
   ),
@@ -97,6 +106,7 @@ List<Game> featuredGames = [
     GameImage(
         "https://images.hdqwalls.com/download/call-of-duty-modern-warfare-2019-4k-cb-1920x1080.jpg",
         ""),
+    [],
     "",
     "Infinity Ward",
   ),
@@ -105,6 +115,7 @@ List<Game> featuredGames = [
     GameImage(
         "https://cdn3.dualshockers.com/wp-content/uploads/2020/01/dbx-kakarot.png",
         ""),
+    [],
     "",
     "CyberConnect2",
   ),
@@ -112,6 +123,7 @@ List<Game> featuredGames = [
     "Mortal Kombat 11",
     GameImage(
         "https://static.trueachievements.com/customimages/093902.jpg", ""),
+    [],
     "",
     "NetherRealm Studios",
   )
