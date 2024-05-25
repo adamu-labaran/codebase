@@ -30,3 +30,6 @@ key helps flutter app to identify and differentiate between widget
 flutter design standard by industry requirement
 1. Material design: this design system was created by google (android)
 2. Cupertino design: this design system created by app (iOS)
+
+build(BuildContext context) => BuildContext context: this a class provided by flutter which tells where exactly building is in widget tree
+and each time working on extends StatelessWidget build widget will be available. it tells the location of a particular widget in the widget tree
