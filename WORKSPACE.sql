@@ -1,7 +1,7 @@
-Select all columns from the books table
+-- Select all columns from the books table
 SELECT book_id, title, author, price, publication_date
 FROM books
-Order by price in descending order and publication date in ascending order
+-- Order by price in descending order and publication date countrycityin ascending order
 ORDER BY price DESC, publication_date ASC;
 /*
 Explanation of the sorting logic:
