@@ -1,3 +1,1173 @@
+/*
+
+Create a database with a table named Employees with columns EmployeeID, FirstName, LastName, Salary, and BonusPercentage. Populate the table with sample data. Write SQL queries to perform the following tasks:
+
+Create a new column named total compensation using the CASE statement. Total Compensation is the sum of Salary and a bonus calculated based on the Bonus Percentage (e.g., if Bonus Percentage is 10, the bonus is 10% of the Salary).
+Identify employees with a Total Compensation greater than $80,000.
+Update the FirstName of employees with a Total Compensation less than $60,000 to 'LowCompensation'.
+ChatGPT
+Here is a complete solution, including SQL commands to create the table, populate it with sample data, and perform the required tasks.
+
+1. Create the Employees Table and Populate with Sample Data
+sql
+Copy code
+-- Create the Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    BonusPercentage DECIMAL(5, 2)
+);
+
+-- Insert sample data into the Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, Salary, BonusPercentage) VALUES
+(1, 'John', 'Doe', 75000, 10),
+(2, 'Jane', 'Smith', 60000, 5),
+(3, 'Emily', 'Johnson', 50000, 8),
+(4, 'Michael', 'Brown', 45000, 12),
+(5, 'Linda', 'Davis', 85000, 15);
+2. Create a New Column Named TotalCompensation
+First, add a new column for Total Compensation:
+
+sql
+Copy code
+-- Add a new column for Total Compensation
+ALTER TABLE Employees
+ADD TotalCompensation DECIMAL(10, 2);
+Next, use a CASE statement to calculate Total Compensation:
+
+sql
+Copy code
+-- Update Total Compensation with the calculated values
+UPDATE Employees
+SET TotalCompensation = Salary + (CASE
+    WHEN BonusPercentage IS NOT NULL THEN Salary * (BonusPercentage / 100)
+    ELSE 0
+END);
+3. Identify Employees with Total Compensation Greater than $80,000
+sql
+Copy code
+-- Select employees with Total Compensation greater than $80,000
+SELECT * FROM Employees
+WHERE TotalCompensation > 80000;
+4. Update the FirstName of Employees with Total Compensation Less than $60,000
+sql
+Copy code
+-- Update the FirstName of employees with Total Compensation less than $60,000 to 'LowCompensation'
+UPDATE Employees
+SET FirstName = 'LowCompensation'
+WHERE TotalCompensation < 60000;
+Final SQL Script
+Here's the entire script combined for clarity:
+
+sql
+Copy code
+-- Create the Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    BonusPercentage DECIMAL(5, 2)
+);
+
+-- Insert sample data into the Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, Salary, BonusPercentage) VALUES
+(1, 'John', 'Doe', 75000, 10),
+(2, 'Jane', 'Smith', 60000, 5),
+(3, 'Emily', 'Johnson', 50000, 8),
+(4, 'Michael', 'Brown', 45000, 12),
+(5, 'Linda', 'Davis', 85000, 15);
+
+-- Add a new column for Total Compensation
+ALTER TABLE Employees
+ADD TotalCompensation DECIMAL(10, 2);
+
+-- Update Total Compensation with the calculated values
+UPDATE Employees
+SET TotalCompensation = Salary + (CASE
+    WHEN BonusPercentage IS NOT NULL THEN Salary * (BonusPercentage / 100)
+    ELSE 0
+END);
+
+-- Select employees with Total Compensation greater than $80,000
+SELECT * FROM Employees
+WHERE TotalCompensation > 80000;
+
+-- Update the FirstName of employees with Total Compensation less than $60,000 to 'LowCompensation'
+UPDATE Employees
+SET FirstName = 'LowCompensation'
+WHERE TotalCompensation < 60000;
+This script will create the table, insert the data, calculate the Total Compensation, and then perform the required queries and updates.
+
+0	6	06:32:53	UPDATE Employees
+ SET FirstName = 'LowCompensation'
+ WHERE TotalCompensation < 60000	Error Code: 1175. You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column. 
+ To disable safe mode, toggle the option in Preferences -> SQL Editor and reconnect.	0.031 sec
+ChatGPT
+The error you're encountering is due to MySQL's safe update mode, which prevents updates without a WHERE clause that uses a key column. To resolve this, you can either temporarily disable safe update mode or modify your query to include a key column in the WHERE clause.
+
+Option 1: Disable Safe Update Mode
+Open MySQL Workbench.
+Go to Edit -> Preferences.
+In the SQL Editor tab, uncheck Safe Updates (rejects UPDATEs and DELETEs with no restrictions).
+Click OK and reconnect to the database.
+Option 2: Modify the Query to Use a Key Column in the WHERE Clause
+You can modify your query to include the EmployeeID in the WHERE clause to satisfy the safe update mode requirement:
+
+sql
+Copy code
+UPDATE Employees
+SET FirstName = 'LowCompensation'
+WHERE TotalCompensation < 60000 AND EmployeeID IS NOT NULL;
+This ensures that a key column (EmployeeID) is included in the WHERE clause.
+
+Complete SQL Script with Modified Query
+Here is the updated script with the modified query:
+
+sql
+Copy code
+-- Create the Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    BonusPercentage DECIMAL(5, 2)
+);
+
+-- Insert sample data into the Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, Salary, BonusPercentage) VALUES
+(1, 'John', 'Doe', 75000, 10),
+(2, 'Jane', 'Smith', 60000, 5),
+(3, 'Emily', 'Johnson', 50000, 8),
+(4, 'Michael', 'Brown', 45000, 12),
+(5, 'Linda', 'Davis', 85000, 15);
+
+-- Add a new column for Total Compensation
+ALTER TABLE Employees
+ADD TotalCompensation DECIMAL(10, 2);
+
+-- Update Total Compensation with the calculated values
+UPDATE Employees
+SET TotalCompensation = Salary + (CASE
+    WHEN BonusPercentage IS NOT NULL THEN Salary * (BonusPercentage / 100)
+    ELSE 0
+END);
+
+-- Select employees with Total Compensation greater than $80,000
+SELECT * FROM Employees
+WHERE TotalCompensation > 80000;
+
+-- Update the FirstName of employees with Total Compensation less than $60,000 to 'LowCompensation'
+UPDATE Employees
+SET FirstName = 'LowCompensation'
+WHERE TotalCompensation < 60000 AND EmployeeID IS NOT NULL;
+This script should work without errors in safe update mode by including the EmployeeID in the WHERE clause of the update statement.
+
+how do i view the content of FirstName
+ChatGPT
+To view the contents of the FirstName column in the Employees table, you can use the SELECT statement. Here's how you can do it:
+
+Query to View the Content of the FirstName Column
+sql
+Copy code
+SELECT EmployeeID, FirstName FROM Employees;
+This query will display the EmployeeID and FirstName of all employees in the Employees table. Including EmployeeID in the result will help identify each employee uniquely.
+
+Full SQL Script Including the Query to View FirstName
+If you want to see the full script with the query to view the FirstName column, here it is:
+
+sql
+Copy code
+-- Create the Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    BonusPercentage DECIMAL(5, 2)
+);
+
+-- Insert sample data into the Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, Salary, BonusPercentage) VALUES
+(1, 'John', 'Doe', 75000, 10),
+(2, 'Jane', 'Smith', 60000, 5),
+(3, 'Emily', 'Johnson', 50000, 8),
+(4, 'Michael', 'Brown', 45000, 12),
+(5, 'Linda', 'Davis', 85000, 15);
+
+-- Add a new column for Total Compensation
+ALTER TABLE Employees
+ADD TotalCompensation DECIMAL(10, 2);
+
+-- Update Total Compensation with the calculated values
+UPDATE Employees
+SET TotalCompensation = Salary + (CASE
+    WHEN BonusPercentage IS NOT NULL THEN Salary * (BonusPercentage / 100)
+    ELSE 0
+END);
+
+-- Select employees with Total Compensation greater than $80,000
+SELECT * FROM Employees
+WHERE TotalCompensation > 80000;
+
+-- Update the FirstName of employees with Total Compensation less than $60,000 to 'LowCompensation'
+UPDATE Employees
+SET FirstName = 'LowCompensation'
+WHERE TotalCompensation < 60000 AND EmployeeID IS NOT NULL;
+
+-- Query to view the content of the FirstName column
+SELECT EmployeeID, FirstName FROM Employees;
+Run the last SELECT query to see the contents of the FirstName column. This will list each employee's ID along with their first name, allowing you to verify any changes made by the update operation.
+
+Create a database with three tables named Employees, Departments, and Salaries. Populate the tables with sample data. Write SQL queries to perform the following tasks:
+
+Retrieve a list of employees with their corresponding department names using an appropriate join.
+Calculate the average salary for each department.
+Identify employees who do not belong to any department.
+ChatGPT
+Here is the SQL code to create the database and the three tables (Employees, Departments, and Salaries), populate them with sample data, and write the necessary queries to perform the specified tasks.
+
+Create and Populate the Tables
+sql
+Copy code
+-- Create the Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    DepartmentID INT
+);
+
+-- Create the Departments table
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(50)
+);
+
+-- Create the Salaries table
+CREATE TABLE Salaries (
+    EmployeeID INT PRIMARY KEY,
+    Salary DECIMAL(10, 2),
+    BonusPercentage DECIMAL(5, 2)
+);
+
+-- Insert sample data into the Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, DepartmentID) VALUES
+(1, 'John', 'Doe', 1),
+(2, 'Jane', 'Smith', 2),
+(3, 'Emily', 'Johnson', NULL),
+(4, 'Michael', 'Brown', 1),
+(5, 'Linda', 'Davis', 3);
+
+-- Insert sample data into the Departments table
+INSERT INTO Departments (DepartmentID, DepartmentName) VALUES
+(1, 'Human Resources'),
+(2, 'Finance'),
+(3, 'Engineering');
+
+-- Insert sample data into the Salaries table
+INSERT INTO Salaries (EmployeeID, Salary, BonusPercentage) VALUES
+(1, 75000, 10),
+(2, 60000, 5),
+(3, 50000, 8),
+(4, 45000, 12),
+(5, 85000, 15);
+Queries
+1. Retrieve a list of employees with their corresponding department names using an appropriate join
+sql
+Copy code
+SELECT E.EmployeeID, E.FirstName, E.LastName, D.DepartmentName
+FROM Employees E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID;
+2. Calculate the average salary for each department
+sql
+Copy code
+SELECT D.DepartmentName, AVG(S.Salary) AS AverageSalary
+FROM Employees E
+JOIN Salaries S ON E.EmployeeID = S.EmployeeID
+JOIN Departments D ON E.DepartmentID = D.DepartmentID
+GROUP BY D.DepartmentName;
+3. Identify employees who do not belong to any department
+sql
+Copy code
+SELECT E.EmployeeID, E.FirstName, E.LastName
+FROM Employees E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID
+WHERE E.DepartmentID IS NULL;
+Complete SQL Script
+Here is the entire script combined for clarity:
+
+sql
+Copy code
+-- Create the Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    DepartmentID INT
+);
+
+-- Create the Departments table
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(50)
+);
+
+-- Create the Salaries table
+CREATE TABLE Salaries (
+    EmployeeID INT PRIMARY KEY,
+    Salary DECIMAL(10, 2),
+    BonusPercentage DECIMAL(5, 2)
+);
+
+-- Insert sample data into the Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, DepartmentID) VALUES
+(1, 'John', 'Doe', 1),
+(2, 'Jane', 'Smith', 2),
+(3, 'Emily', 'Johnson', NULL),
+(4, 'Michael', 'Brown', 1),
+(5, 'Linda', 'Davis', 3);
+
+-- Insert sample data into the Departments table
+INSERT INTO Departments (DepartmentID, DepartmentName) VALUES
+(1, 'Human Resources'),
+(2, 'Finance'),
+(3, 'Engineering');
+
+-- Insert sample data into the Salaries table
+INSERT INTO Salaries (EmployeeID, Salary, BonusPercentage) VALUES
+(1, 75000, 10),
+(2, 60000, 5),
+(3, 50000, 8),
+(4, 45000, 12),
+(5, 85000, 15);
+
+-- Query to retrieve a list of employees with their corresponding department names
+SELECT E.EmployeeID, E.FirstName, E.LastName, D.DepartmentName
+FROM Employees E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID;
+
+-- Query to calculate the average salary for each department
+SELECT D.DepartmentName, AVG(S.Salary) AS AverageSalary
+FROM Employees E
+JOIN Salaries S ON E.EmployeeID = S.EmployeeID
+JOIN Departments D ON E.DepartmentID = D.DepartmentID
+GROUP BY D.DepartmentName;
+
+-- Query to identify employees who do not belong to any department
+SELECT E.EmployeeID, E.FirstName, E.LastName
+FROM Employees E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID
+WHERE E.DepartmentID IS NULL;
+This script will create the necessary tables, populate them with sample data, and run the queries to retrieve the required information.
+
+E.EmployeeID, E.FirstName, D.department
+whta the E and D stand for?
+ChatGPT
+In SQL queries, E and D are aliases for the tables Employees and Departments, respectively. Aliases are used to simplify and shorten the table names in the query, making it easier to write and read. Here’s a brief explanation of how these aliases are used in the context of the queries:
+
+E is an alias for the Employees table.
+D is an alias for the Departments table.
+Using these aliases, you can refer to columns from these tables without having to write the full table name each time. Here is how the queries with aliases work:
+
+1. Retrieve a list of employees with their corresponding department names using an appropriate join
+sql
+Copy code
+SELECT E.EmployeeID, E.FirstName, E.LastName, D.DepartmentName
+FROM Employees E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID;
+E.EmployeeID refers to the EmployeeID column from the Employees table.
+E.FirstName refers to the FirstName column from the Employees table.
+E.LastName refers to the LastName column from the Employees table.
+D.DepartmentName refers to the DepartmentName column from the Departments table.
+2. Calculate the average salary for each department
+sql
+Copy code
+SELECT D.DepartmentName, AVG(S.Salary) AS AverageSalary
+FROM Employees E
+JOIN Salaries S ON E.EmployeeID = S.EmployeeID
+JOIN Departments D ON E.DepartmentID = D.DepartmentID
+GROUP BY D.DepartmentName;
+D.DepartmentName refers to the DepartmentName column from the Departments table.
+AVG(S.Salary) calculates the average of the Salary column from the Salaries table.
+E.EmployeeID, S.EmployeeID, and D.DepartmentID refer to the respective columns from the Employees, Salaries, and Departments tables.
+3. Identify employees who do not belong to any department
+sql
+Copy code
+SELECT E.EmployeeID, E.FirstName, E.LastName
+FROM Employees E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID
+WHERE E.DepartmentID IS NULL;
+E.EmployeeID, E.FirstName, and E.LastName refer to the respective columns from the Employees table.
+E.DepartmentID and D.DepartmentID refer to the DepartmentID columns from the Employees and Departments tables.
+Full SQL Script with Aliases Explained
+Here is the full script again with explanations:
+
+sql
+Copy code
+-- Create the Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    DepartmentID INT
+);
+
+-- Create the Departments table
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(50)
+);
+
+-- Create the Salaries table
+CREATE TABLE Salaries (
+    EmployeeID INT PRIMARY KEY,
+    Salary DECIMAL(10, 2),
+    BonusPercentage DECIMAL(5, 2)
+);
+
+-- Insert sample data into the Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, DepartmentID) VALUES
+(1, 'John', 'Doe', 1),
+(2, 'Jane', 'Smith', 2),
+(3, 'Emily', 'Johnson', NULL),
+(4, 'Michael', 'Brown', 1),
+(5, 'Linda', 'Davis', 3);
+
+-- Insert sample data into the Departments table
+INSERT INTO Departments (DepartmentID, DepartmentName) VALUES
+(1, 'Human Resources'),
+(2, 'Finance'),
+(3, 'Engineering');
+
+-- Insert sample data into the Salaries table
+INSERT INTO Salaries (EmployeeID, Salary, BonusPercentage) VALUES
+(1, 75000, 10),
+(2, 60000, 5),
+(3, 50000, 8),
+(4, 45000, 12),
+(5, 85000, 15);
+
+-- Query to retrieve a list of employees with their corresponding department names
+SELECT E.EmployeeID, E.FirstName, E.LastName, D.DepartmentName
+FROM Employees E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID;
+
+-- Query to calculate the average salary for each department
+SELECT D.DepartmentName, AVG(S.Salary) AS AverageSalary
+FROM Employees E
+JOIN Salaries S ON E.EmployeeID = S.EmployeeID
+JOIN Departments D ON E.DepartmentID = D.DepartmentID
+GROUP BY D.DepartmentName;
+
+-- Query to identify employees who do not belong to any department
+SELECT E.EmployeeID, E.FirstName, E.LastName
+FROM Employees E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID
+WHERE E.DepartmentID IS NULL;
+This script uses aliases (E for Employees, D for Departments, and S for Salaries) to make the queries more readable and concise.
+
+0	16	07:22:59	SELECT E.EmployeeID, E.FirstName, E.LastName, D.DepartmentName
+ FROM Employees E
+ LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID	Error Code: 1054. Unknown column 'E.DepartmentID' in 'on clause'	0.000 sec
+ChatGPT
+The error indicates that the DepartmentID column is not found in the Employees table, likely because it was not included when creating the table. Let's double-check the table definitions and ensure that the column names and relationships are correct.
+
+Here’s the corrected script to create the tables, including DepartmentID in the Employees table:
+
+Correct Table Creation and Population Script
+sql
+Copy code
+-- Create the Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    DepartmentID INT
+);
+
+-- Create the Departments table
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(50)
+);
+
+-- Create the Salaries table
+CREATE TABLE Salaries (
+    EmployeeID INT PRIMARY KEY,
+    Salary DECIMAL(10, 2),
+    BonusPercentage DECIMAL(5, 2)
+);
+
+-- Insert sample data into the Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, DepartmentID) VALUES
+(1, 'John', 'Doe', 1),
+(2, 'Jane', 'Smith', 2),
+(3, 'Emily', 'Johnson', NULL),
+(4, 'Michael', 'Brown', 1),
+(5, 'Linda', 'Davis', 3);
+
+-- Insert sample data into the Departments table
+INSERT INTO Departments (DepartmentID, DepartmentName) VALUES
+(1, 'Human Resources'),
+(2, 'Finance'),
+(3, 'Engineering');
+
+-- Insert sample data into the Salaries table
+INSERT INTO Salaries (EmployeeID, Salary, BonusPercentage) VALUES
+(1, 75000, 10),
+(2, 60000, 5),
+(3, 50000, 8),
+(4, 45000, 12),
+(5, 85000, 15);
+Correct Queries
+1. Retrieve a list of employees with their corresponding department names using an appropriate join
+sql
+Copy code
+SELECT E.EmployeeID, E.FirstName, E.LastName, D.DepartmentName
+FROM Employees E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID;
+2. Calculate the average salary for each department
+sql
+Copy code
+SELECT D.DepartmentName, AVG(S.Salary) AS AverageSalary
+FROM Employees E
+JOIN Salaries S ON E.EmployeeID = S.EmployeeID
+JOIN Departments D ON E.DepartmentID = D.DepartmentID
+GROUP BY D.DepartmentName;
+3. Identify employees who do not belong to any department
+sql
+Copy code
+SELECT E.EmployeeID, E.FirstName, E.LastName
+FROM Employees E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID
+WHERE E.DepartmentID IS NULL;
+Full Correct SQL Script
+Here is the complete and corrected script:
+
+sql
+Copy code
+-- Create the Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    DepartmentID INT
+);
+
+-- Create the Departments table
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(50)
+);
+
+-- Create the Salaries table
+CREATE TABLE Salaries (
+    EmployeeID INT PRIMARY KEY,
+    Salary DECIMAL(10, 2),
+    BonusPercentage DECIMAL(5, 2)
+);
+
+-- Insert sample data into the Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, DepartmentID) VALUES
+(1, 'John', 'Doe', 1),
+(2, 'Jane', 'Smith', 2),
+(3, 'Emily', 'Johnson', NULL),
+(4, 'Michael', 'Brown', 1),
+(5, 'Linda', 'Davis', 3);
+
+-- Insert sample data into the Departments table
+INSERT INTO Departments (DepartmentID, DepartmentName) VALUES
+(1, 'Human Resources'),
+(2, 'Finance'),
+(3, 'Engineering');
+
+-- Insert sample data into the Salaries table
+INSERT INTO Salaries (EmployeeID, Salary, BonusPercentage) VALUES
+(1, 75000, 10),
+(2, 60000, 5),
+(3, 50000, 8),
+(4, 45000, 12),
+(5, 85000, 15);
+
+-- Query to retrieve a list of employees with their corresponding department names
+SELECT E.EmployeeID, E.FirstName, E.LastName, D.DepartmentName
+FROM Employees E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID;
+
+-- Query to calculate the average salary for each department
+SELECT D.DepartmentName, AVG(S.Salary) AS AverageSalary
+FROM Employees E
+JOIN Salaries S ON E.EmployeeID = S.EmployeeID
+JOIN Departments D ON E.DepartmentID = D.DepartmentID
+GROUP BY D.DepartmentName;
+
+-- Query to identify employees who do not belong to any department
+SELECT E.EmployeeID, E.FirstName, E.LastName
+FROM Employees E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID
+WHERE E.DepartmentID IS NULL;
+Make sure to run the table creation and data insertion scripts before executing the queries to ensure that the tables and data are properly set up.
+
+What is the purpose of the SQL CASE statement in a query?
+
+
+To filter rows based on a condition.
+
+
+To perform calculations on numeric columns.
+
+
+To create a new column based on specified conditions.
+
+
+To sort the result set.
+ChatGPT
+The purpose of the SQL CASE statement in a query is:
+
+To create a new column based on specified conditions.
+
+The CASE statement allows you to add conditional logic to your SQL queries, enabling you to return different values based on certain conditions. Here is an example of how it can be used to create a new column based on specified conditions:
+
+sql
+Copy code
+SELECT 
+    EmployeeID, 
+    FirstName, 
+    LastName, 
+    Salary,
+    CASE 
+        WHEN Salary > 80000 THEN 'High Salary'
+        WHEN Salary BETWEEN 50000 AND 80000 THEN 'Medium Salary'
+        ELSE 'Low Salary'
+    END AS SalaryCategory
+FROM Employees;
+In this example, the CASE statement creates a new column called SalaryCategory based on the conditions specified for the Salary column. The output will categorize each employee's salary as 'High Salary', 'Medium Salary', or 'Low Salary'.
+
+what is the best option
+ChatGPT
+The best option for the purpose of the SQL CASE statement in a query is:
+
+To create a new column based on specified conditions.
+
+Here’s a detailed explanation:
+
+The CASE statement in SQL is primarily used to return a value based on a specified condition.
+It allows you to implement conditional logic directly within your SQL queries.
+You can use it to create new columns where the value is determined by evaluating one or more conditions.
+Example Usage of the CASE Statement
+Here’s an example that illustrates how the CASE statement is used to create a new column based on conditions:
+
+sql
+Copy code
+SELECT 
+    EmployeeID, 
+    FirstName, 
+    LastName, 
+    Salary,
+    CASE 
+        WHEN Salary > 80000 THEN 'High Salary'
+        WHEN Salary BETWEEN 50000 AND 80000 THEN 'Medium Salary'
+        ELSE 'Low Salary'
+    END AS SalaryCategory
+FROM Employees;
+In this example:
+
+A new column called SalaryCategory is created.
+The value of SalaryCategory is determined by the conditions specified in the CASE statement:
+If Salary is greater than 80,000, SalaryCategory is 'High Salary'.
+If Salary is between 50,000 and 80,000, SalaryCategory is 'Medium Salary'.
+If Salary is less than 50,000, SalaryCategory is 'Low Salary'.
+This flexibility makes the CASE statement a powerful tool for creating derived columns in your queries based on conditional logic.
+
+How do you use the CASE statement to create a column with different values based on conditions?
+
+
+CASE column_name WHEN condition THEN result END
+
+
+CASE WHEN condition THEN result ELSE column_name END
+
+
+CASE result WHEN condition THEN column_name END
+
+
+CASE WHEN condition THEN result END
+ChatGPT
+To use the CASE statement to create a column with different values based on conditions, the correct syntax is:
+
+CASE WHEN condition THEN result END
+
+Here is a detailed example of how to use the CASE statement:
+
+Example
+Assume we have an Employees table with columns EmployeeID, FirstName, LastName, and Salary. We want to create a new column called SalaryCategory that categorizes the employees' salaries as 'High Salary', 'Medium Salary', or 'Low Salary'.
+
+Query
+sql
+Copy code
+SELECT 
+    EmployeeID, 
+    FirstName, 
+    LastName, 
+    Salary,
+    CASE 
+        WHEN Salary > 80000 THEN 'High Salary'
+        WHEN Salary BETWEEN 50000 AND 80000 THEN 'Medium Salary'
+        ELSE 'Low Salary'
+    END AS SalaryCategory
+FROM Employees;
+Explanation
+CASE: Begins the CASE statement.
+WHEN condition THEN result: Evaluates each condition in the order specified.
+WHEN Salary > 80000 THEN 'High Salary': If the Salary is greater than 80,000, the SalaryCategory is 'High Salary'.
+WHEN Salary BETWEEN 50000 AND 80000 THEN 'Medium Salary': If the Salary is between 50,000 and 80,000, the SalaryCategory is 'Medium Salary'.
+ELSE 'Low Salary': If none of the above conditions are met, the SalaryCategory is 'Low Salary'.
+END: Ends the CASE statement.
+AS SalaryCategory: Assigns the name SalaryCategory to the new column.
+Result
+The result of the query will include the EmployeeID, FirstName, LastName, Salary, and the newly created SalaryCategory column based on the specified conditions.
+
+Sample Output
+EmployeeID	FirstName	LastName	Salary	SalaryCategory
+1	John	Doe	90000	High Salary
+2	Jane	Smith	60000	Medium Salary
+3	Emily	Johnson	45000	Low Salary
+This demonstrates how the CASE statement can be used to create a new column with different values based on specified conditions.
+
+Which SQL function is used to implement the NULL coalescing in a conditional expression?
+
+
+IFNULL()
+
+
+COALESCE()
+
+
+ISNULL()
+
+
+NVL()
+ChatGPT
+The SQL function used to implement NULL coalescing in a conditional expression is:
+
+COALESCE()
+
+The COALESCE() function returns the first non-null expression among its arguments. It is commonly used to handle NULL values by providing a default value when a NULL is encountered.
+
+Example
+Assume we have a Customers table with columns CustomerID, FirstName, LastName, and Email. We want to display the email addresses of customers, but if the Email is NULL, we want to display a default message such as 'No Email Provided'.
+
+Query
+sql
+Copy code
+SELECT 
+    CustomerID, 
+    FirstName, 
+    LastName, 
+    COALESCE(Email, 'No Email Provided') AS Email
+FROM Customers;
+Explanation
+COALESCE(Email, 'No Email Provided'): This will check if the Email column is NULL. If it is, it will return 'No Email Provided'. Otherwise, it will return the value of the Email column.
+Sample Output
+CustomerID	FirstName	LastName	Email
+1	John	Doe	john.doe@example.com
+2	Jane	Smith	No Email Provided
+3	Emily	Johnson	emily.johnson@example.com
+Other Functions
+IFNULL(): This is used in MySQL to provide a default value if a value is NULL. Syntax: IFNULL(expression, default_value).
+ISNULL(): This function is used in SQL Server to replace NULL with a specified replacement value. Syntax: ISNULL(expression, replacement_value).
+NVL(): This is used in Oracle to substitute a value when a NULL is encountered. Syntax: NVL(expression, replacement_value).
+While these functions serve similar purposes, COALESCE() is more widely supported across different SQL databases and is more flexible as it can take multiple arguments.
+
+
+In a WHERE clause, what does the NULL-safe equality operator (<=>) do?
+
+
+Compares values and considers NULLs as equal.
+
+
+Compares values and considers NULLs as not equal.
+
+
+. Compares only non-NULL values.
+
+
+Excludes NULL values from the comparison.
+ChatGPT
+In a WHERE clause, the NULL-safe equality operator (<=>) does the following:
+
+Compares values and considers NULLs as equal.
+
+Explanation
+The <=> operator is a special comparison operator in MySQL that is used to compare two values and treat NULLs as equal. This operator returns 1 if both operands are equal, including if both are NULL, and 0 otherwise. It is useful for scenarios where you want to compare columns that might contain NULL values.
+
+Example
+Consider the following Employees table:
+
+EmployeeID	FirstName	LastName	ManagerID
+1	John	Doe	NULL
+2	Jane	Smith	1
+3	Emily	Johnson	NULL
+4	Michael	Brown	2
+To find employees who have the same ManagerID value, including those where ManagerID is NULL, you can use the <=> operator.
+
+Query
+sql
+Copy code
+SELECT * 
+FROM Employees e1
+WHERE e1.ManagerID <=> e1.EmployeeID;
+This query will return rows where the ManagerID is the same as the EmployeeID, treating NULLs as equal.
+
+Summary
+<=> compares values and considers NULLs as equal.
+It is specific to MySQL.
+It is useful when you need to compare columns that might contain NULL values and treat NULLs as equal in the comparison.
+The correct option is:
+
+Compares values and considers NULLs as equal.
+
+What is the purpose of the SQL IF statement in a stored procedure or function?
+
+
+To filter rows based on a condition.
+
+
+To perform calculations on numeric columns.
+
+
+To conditionally execute code blocks.
+
+
+To concatenate strings.
+ChatGPT
+The purpose of the SQL IF statement in a stored procedure or function is:
+
+To conditionally execute code blocks.
+
+Explanation
+The IF statement in SQL is used to implement conditional logic in stored procedures or functions. It allows the execution of different blocks of code based on certain conditions.
+
+Example
+Here's an example of a stored procedure that uses the IF statement to conditionally execute different code blocks:
+
+Example Stored Procedure
+sql
+Copy code
+DELIMITER $$
+
+CREATE PROCEDURE UpdateSalary (IN employeeID INT, IN newSalary DECIMAL(10, 2))
+BEGIN
+    DECLARE currentSalary DECIMAL(10, 2);
+    
+    -- Retrieve the current salary of the employee
+    SELECT Salary INTO currentSalary
+    FROM Employees
+    WHERE EmployeeID = employeeID;
+    
+    -- Conditional logic using IF statement
+    IF currentSalary IS NULL THEN
+        -- If the employee does not exist, insert a new record
+        INSERT INTO Employees (EmployeeID, Salary) VALUES (employeeID, newSalary);
+    ELSE
+        -- If the employee exists, update the salary
+        UPDATE Employees
+        SET Salary = newSalary
+        WHERE EmployeeID = employeeID;
+    END IF;
+END$$
+
+DELIMITER ;
+Explanation of the Example
+DECLARE currentSalary DECIMAL(10, 2);: Declares a variable to hold the current salary.
+SELECT Salary INTO currentSalary FROM Employees WHERE EmployeeID = employeeID;: Retrieves the current salary of the specified employee.
+IF currentSalary IS NULL THEN ... ELSE ... END IF;: The IF statement checks if the current salary is NULL (meaning the employee does not exist). If true, it inserts a new record. Otherwise, it updates the existing record.
+Summary
+The IF statement in a stored procedure or function is used to execute different blocks of code based on specified conditions.
+It provides the ability to implement conditional logic, which is essential for handling different scenarios and ensuring that the correct operations are performed based on the data and conditions.
+The correct option is:
+
+To conditionally execute code blocks.
+
+Create a database with a table named Employees with columns EmployeeID, FirstName, LastName, Salary, and BonusPercentage. Populate the table with sample data. Write SQL queries to perform the following tasks:
+
+Create a new column named TotalCompensation using the CASE statement, where Total Compensation is the sum of Salary and a bonus calculated based on the Bonus Percentage (e.g., if Bonus Percentage is 10, the bonus is 10% of the Salary).
+Identify employees with a Total Compensation greater than $80,000.
+Update the FirstName of employees with a Total Compensation less than $60,000 to 'LowCompensation'.
+ChatGPT
+Here's how you can create a database table named Employees, populate it with sample data, and write SQL queries to perform the tasks specified.
+
+Step 1: Create the Employees table and insert sample data
+sql
+Copy code
+-- Create the Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    BonusPercentage DECIMAL(5, 2)
+);
+
+-- Insert sample data into the Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, Salary, BonusPercentage) VALUES
+(1, 'John', 'Doe', 75000.00, 10.00),
+(2, 'Jane', 'Smith', 50000.00, 5.00),
+(3, 'Alice', 'Johnson', 95000.00, 15.00),
+(4, 'Bob', 'Williams', 45000.00, 8.00),
+(5, 'Charlie', 'Brown', 60000.00, 12.00);
+Step 2: Create a new column TotalCompensation using the CASE statement
+sql
+Copy code
+-- Add the TotalCompensation column
+ALTER TABLE Employees
+ADD TotalCompensation DECIMAL(10, 2);
+
+-- Update the TotalCompensation column using the CASE statement
+UPDATE Employees
+SET TotalCompensation = Salary + (CASE 
+                                    WHEN BonusPercentage IS NOT NULL THEN Salary * (BonusPercentage / 100)
+                                    ELSE 0
+                                  END);
+Step 3: Identify employees with a Total Compensation greater than $80,000
+sql
+Copy code
+-- Select employees with Total Compensation greater than $80,000
+SELECT EmployeeID, FirstName, LastName, TotalCompensation
+FROM Employees
+WHERE TotalCompensation > 80000.00;
+Step 4: Update the FirstName of employees with a Total Compensation less than $60,000 to 'LowCompensation'
+sql
+Copy code
+-- Update FirstName to 'LowCompensation' for employees with Total Compensation less than $60,000
+UPDATE Employees
+SET FirstName = 'LowCompensation'
+WHERE TotalCompensation < 60000.00;
+Full Example in Sequence
+Putting it all together, here is the complete sequence of SQL commands:
+
+sql
+Copy code
+-- Create the Employees table
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    BonusPercentage DECIMAL(5, 2)
+);
+
+-- Insert sample data into the Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, Salary, BonusPercentage) VALUES
+(1, 'John', 'Doe', 75000.00, 10.00),
+(2, 'Jane', 'Smith', 50000.00, 5.00),
+(3, 'Alice', 'Johnson', 95000.00, 15.00),
+(4, 'Bob', 'Williams', 45000.00, 8.00),
+(5, 'Charlie', 'Brown', 60000.00, 12.00);
+
+-- Add the TotalCompensation column
+ALTER TABLE Employees
+ADD TotalCompensation DECIMAL(10, 2);
+
+-- Update the TotalCompensation column using the CASE statement
+UPDATE Employees
+SET TotalCompensation = Salary + (CASE 
+                                    WHEN BonusPercentage IS NOT NULL THEN Salary * (BonusPercentage / 100)
+                                    ELSE 0
+                                  END);
+
+-- Select employees with Total Compensation greater than $80,000
+SELECT EmployeeID, FirstName, LastName, TotalCompensation
+FROM Employees
+WHERE TotalCompensation > 80000.00;
+
+-- Update FirstName to 'LowCompensation' for employees with Total Compensation less than $60,000
+UPDATE Employees
+SET FirstName = 'LowCompensation'
+WHERE TotalCompensation < 60000.00;
+These SQL statements create the Employees table, populate it with sample data, compute the TotalCompensation, identify employees with TotalCompensation over $80,000, and update the FirstName for those with TotalCompensation under $60,000.
+
+Using AND
+The following exercises combine AND and OR with the WHERE clause. Using these operators together strengthens your queries and analyses of data.
+
+You will apply these new skills now on the films table.
+
+Instructions 1/3
+35 XP
+Instructions 1/3
+35 XP
+1
+Select the title and release_year for all German-language films released before 2000.
+
+Take Hint (-10 XP)
+2
+Update the query from the previous step to show German-language films released after 2000 rather than before.
+3
+Select all details for German-language films released after 2000 but before 2010 using only WHERE and AND.
+ChatGPT
+Let's break down the tasks and write the necessary SQL queries for each step. We'll assume there is a films table with at least the following columns: title, release_year, and language.
+
+Step 1: Select the title and release_year for all German-language films released before 2000
+sql
+Copy code
+SELECT title, release_year
+FROM films
+WHERE language = 'German' AND release_year < 2000;
+Step 2: Update the query from the previous step to show German-language films released after 2000 rather than before
+sql
+Copy code
+SELECT title, release_year
+FROM films
+WHERE language = 'German' AND release_year > 2000;
+Step 3: Select all details for German-language films released after 2000 but before 2010 using only WHERE and AND
+sql
+Copy code
+SELECT *
+FROM films
+WHERE language = 'German' AND release_year > 2000 AND release_year < 2010;
+These queries use the AND operator to combine multiple conditions in the WHERE clause, allowing you to filter the data based on multiple criteria.
+
+SELECT title, release_year
+FROM films
+WHERE (release_year = 1990 OR release_year = 1999)
+-- Add a filter to see only English or Spanish-language films
+	___;
+ChatGPT
+To add a filter to see only English or Spanish-language films, you need to combine the existing conditions with a new condition that checks for the language being either 'English' or 'Spanish'. Here's how you can complete the query:
+
+sql
+Copy code
+SELECT title, release_year
+FROM films
+WHERE (release_year = 1990 OR release_year = 1999)
+  AND (language = 'English' OR language = 'Spanish');
+This query will select the title and release_year of films that were released either in 1990 or 1999 and are either in English or Spanish.
+
+SELECT title, release_year
+FROM films
+WHERE (release_year = 1990 OR release_year = 1999)
+	AND (language = 'English' OR language = 'Spanish')
+-- Filter films with more than $2,000,000 gross
+	___;
+ChatGPT
+To filter films with more than $2,000,000 gross, you need to add another condition to the WHERE clause that checks the gross amount. Assuming the films table has a gross column, the query would look like this:
+
+sql
+Copy code
+SELECT title, release_year
+FROM films
+WHERE (release_year = 1990 OR release_year = 1999)
+  AND (language = 'English' OR language = 'Spanish')
+  AND gross > 2000000;
+This query will select the title and release_year of films that were released in either 1990 or 1999, are in English or Spanish, and have a gross income of more than $2,000,000.
+
+Using BETWEEN
+Let's use BETWEEN with AND on the films database to get the title and release_year of all Spanish-language films released between 1990 and 2000 (inclusive) with budgets over $100 million.
+
+We have broken the problem into smaller steps so that you can build the query as you go along!
+
+Select the title and release_year of all films released between 1990 and 2000 (inclusive) using BETWEEN.
+ChatGPT
+To select the title and release_year of all films released between 1990 and 2000 (inclusive) using the BETWEEN operator, you can use the following query:
+
+sql
+Copy code
+SELECT title, release_year
+FROM films
+WHERE release_year BETWEEN 1990 AND 2000;
+This query will return the title and release_year of all films released within the specified range.
+
+Next Steps
+To solve the complete problem, you need to add conditions for the language being 'Spanish' and the budget being over $100 million. Here's how you can build up to the full query step-by-step.
+
+Step 1: Select the title and release_year of all Spanish-language films released between 1990 and 2000
+sql
+Copy code
+SELECT title, release_year
+FROM films
+WHERE release_year BETWEEN 1990 AND 2000
+  AND language = 'Spanish';
+Step 2: Add the condition for budgets over $100 million
+Assuming the films table has a budget column, the complete query would be:
+
+sql
+Copy code
+SELECT title, release_year
+FROM films
+WHERE release_year BETWEEN 1990 AND 2000
+  AND language = 'Spanish'
+  AND budget > 100000000;
+This final query will return the title and release_year of all Spanish-language films released between 1990 and 2000 (inclusive) with budgets over $100 million.
+
+0	9	23:01:24	UPDATE Employees
+ SET TotalCompensation = Salary + (CASE 
+                                     WHEN BonusPercentage IS NOT NULL THEN Salary * (BonusPercentage / 100)
+                                     ELSE 0
+                                   END)	Error Code: 1175. You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column. 
+ To disable safe mode, toggle the option in Preferences -> SQL Editor and reconnect.	0.000 sec
+ChatGPT
+The error you are encountering is because MySQL's safe update mode is preventing the update operation without a WHERE clause that references a key column. Safe update mode is designed to prevent accidental updates to the entire table.
+
+To resolve this issue, you have two options:
+
+Option 1: Temporarily Disable Safe Update Mode
+Disable Safe Update Mode: You can temporarily disable safe update mode by executing the following command:
+
+sql
+Copy code
+SET SQL_SAFE_UPDATES = 0;
+Run the Update Query:
+
+sql
+Copy code
+UPDATE Employees
+SET TotalCompensation = Salary + (CASE 
+                                    WHEN BonusPercentage IS NOT NULL THEN Salary * (BonusPercentage / 100)
+                                    ELSE 0
+                                  END);
+Re-enable Safe Update Mode: After running your update query, it's a good practice to re-enable safe update mode:
+
+sql
+Copy code
+SET SQL_SAFE_UPDATES = 1;
+Option 2: Include a WHERE Clause with a Key Column
+If you prefer to keep safe update mode enabled, you can include a WHERE clause that uses a key column, such as EmployeeID. Here's an example of how you can do it:
+
+sql
+Copy code
+UPDATE Employees
+SET TotalCompensation = Salary + (CASE 
+                                    WHEN BonusPercentage IS NOT NULL THEN Salary * (BonusPercentage / 100)
+                                    ELSE 0
+                                  END)
+WHERE EmployeeID IS NOT NULL;
+This approach ensures that the WHERE clause references a key column, satisfying the requirements of safe update mode.
+
+Complete Example
+Here's a complete example using the first option (disabling safe update mode temporarily):
+
+sql
+Copy code
+-- Disable safe update mode
+SET SQL_SAFE_UPDATES = 0;
+
+-- Update the TotalCompensation column
+UPDATE Employees
+SET TotalCompensation = Salary + (CASE 
+                                    WHEN BonusPercentage IS NOT NULL THEN Salary * (BonusPercentage / 100)
+                                    ELSE 0
+                                  END);
+
+-- Re-enable safe update mode
+SET SQL_SAFE_UPDATES = 1;
+Choose the option that best fits your scenario. Disabling safe update mode temporarily is usually the simplest approach for a one-time update. If you prefer not to disable safe update mode, adding a WHERE clause with a key column is the way to go.
+
+*/
+
 -- Select the title and release_year for films released between 1990 and 2000
 SELECT  title, release_year
 FROM films
