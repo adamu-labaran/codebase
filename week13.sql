@@ -1,4 +1,4 @@
--- Select employees with Total Compensation greater than $80,000
-SELECT EmployeeID, FirstName, LastName, TotalCompensation
-FROM Employees
-WHERE TotalCompensation > 80000;
+SELECT E.EmployeeID, E.FirstName, E.LastName
+FROM Employees2 E
+LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID
+WHERE E.DepartmentID IS NULL;
