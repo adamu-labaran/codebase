@@ -1,4 +1,7 @@
-SELECT E.EmployeeID, E.FirstName, E.LastName
-FROM Employees2 E
-LEFT JOIN Departments D ON E.DepartmentID = D.DepartmentID
-WHERE E.DepartmentID IS NULL;
+-- Chart 1: Country with the Most Netflix Content
+SELECT country, COUNT(*) AS count
+FROM shows
+WHERE country IS NOT NULL AND country != ''
+GROUP BY country
+ORDER BY count DESC
+LIMIT 10;
