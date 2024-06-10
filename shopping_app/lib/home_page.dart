@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  final List<String> filters = const ['All', 'Addidas', 'Nike'];
+
   @override
   Widget build(BuildContext context) {
     const border = OutlineInputBorder(
@@ -14,7 +16,7 @@ class HomePage extends StatelessWidget {
         left: Radius.circular(50),
       ),
     );
-    return Scaffold(
+    return  Scaffold(
         body: SafeArea(
       // safe area is used to prevent content from uppermost and buttom of our app
       child: Column(
@@ -23,8 +25,8 @@ class HomePage extends StatelessWidget {
           Row(
             // row is used to wrap Text and TextField in order to a both of them in a single line as textField is block element it takes the entire line
             children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
+              const Padding(
+                padding: EdgeInsets.all(20.0),
                 child: Text(
                   'Shoes\nCollection',
                   style: TextStyle(
@@ -33,7 +35,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
+           const Expanded(
                 //  expanded determines the screen size for all devices for both text and textField and for TextField to use the remaining space after the shoes collection
                 child: TextField(
                   decoration: InputDecoration(
@@ -46,7 +48,8 @@ class HomePage extends StatelessWidget {
                         border, // this  border have been defined from top so that it can passed as a value.
                   ),
                 ),
-              )
+              ),
+              
             ],
           ),
         ],
