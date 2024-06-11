@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Lato',
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromRGBO(254, 204, 1, 1),
+          primary: const Color.fromRGBO(254, 204, 1, 1),
         ),
         inputDecorationTheme: const InputDecorationTheme(
           // search bar default settings
@@ -27,6 +28,16 @@ class MyApp extends StatelessWidget {
           ),
           prefixIconColor:
               Color.fromRGBO(119, 119, 119, 1), //default prefix color
+        ),
+        textTheme: const TextTheme(
+          titleMedium: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+          bodySmall: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
         ),
       ),
       home: const HomePage(), // home page from home_page.dart
