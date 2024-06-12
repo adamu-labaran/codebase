@@ -39,20 +39,17 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         // column is used to center our program from the screen widget.
         children: [
-          const Row(
+           Row(
             // row is used to wrap Text and TextField in order to a both of them in a single line as textField is block element it takes the entire line
             children: [
               Padding(
-                padding: EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Text(
                   'Shoes\nCollection',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 35,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
-              Expanded(
+             const Expanded(
                 //  expanded determines the screen size for all devices for both text and textField and for TextField to use the remaining space after the shoes collection
                 child: TextField(
                   decoration: InputDecoration(
@@ -121,6 +118,9 @@ class _HomePageState extends State<HomePage> {
                   title: product['title'] as String,
                   price: product['price'] as double,
                   image: product['imageURL'] as String,
+                  backgroundColor: index.isEven 
+                  ? const Color.fromRGBO(216, 240, 253, 1)
+                  : const Color.fromRGBO(245, 247, 249, 1),
                 );
               },
             ),
