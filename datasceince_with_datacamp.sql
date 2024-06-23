@@ -1560,6 +1560,1054 @@ SELECT
     ROUND(duration / 60.0, 2) AS duration_hours
 FROM films;
 
+-- sorting function
+-- Select name from people and sort alphabetically
+SELECT name
+FROM people
+ORDER BY name ASC;
+
+-- Select the title and duration from longest to shortest film
+SELECT title, duration
+FROM films
+ORDER BY duration DESC;
+
+-- Select the release year, duration, and title sorted by release year and duration
+SELECT release_year, duration, title
+FROM films
+ORDER BY release_year, duration;
+
+-- Select the certification, release year, and title sorted by certification and release year
+SELECT certification, release_year, title
+FROM films
+ORDER BY certification ASC, release_year DESC;
+
+-- Find the release_year and film_count of each year
+SELECT release_year, COUNT(*) AS film_count
+FROM films
+GROUP BY release_year;
+
+-- Find the release_year and average duration of films for each year
+SELECT release_year, AVG(duration) AS avg_duration
+FROM films
+GROUP BY release_year;
+
+-- Find the release_year, country, and max_budget, then group and order by release_year and country
+SELECT release_year, country, MAX(budget) AS max_budget
+FROM films
+GROUP BY release_year, country
+ORDER BY release_year, country;
+
+SELECT release_year, COUNT(DISTINCT language) AS language_diversity
+FROM films
+GROUP BY release_year
+ORDER BY language_diversity DESC
+LIMIT 1;
+
+
+-- Select the country and distinct count of certification as certification_count
+SELECT country, COUNT(DISTINCT certification) AS certification_count
+FROM films
+
+-- Group by country
+GROUP BY country
+
+
+-- Filter results to countries with more than 10 different certifications
+HAVING COUNT(DISTINCT certification) > 10;
+
+-- Select the country and average_budget from films
+SELECT 
+    country,
+    ROUND(AVG(budget), 2) AS average_budget
+FROM films
+-- Group by country
+GROUP BY country
+-- Filter to countries with an average_budget of more than one billion
+HAVING AVG(budget) > 1000000000
+-- Order by descending order of the aggregated budget
+ORDER BY average_budget DESC;
+
+-- Select the release_year for films released after 1990 grouped by year
+SELECT release_year
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year;
+
+-- Modify the query to also list the average budget and average gross
+SELECT 
+    release_year,
+    ROUND(AVG(budget), 2) AS avg_budget,
+    ROUND(AVG(gross), 2) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year;
+
+
+-- Modify the query to also list the average budget and average gross
+SELECT release_year, AVG(budget) AS avg_budget, AVG(gross) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year;
+
+
+SELECT release_year, AVG(budget) AS avg_budget, AVG(gross) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year
+-- Modify the query to see only years with an avg_budget of more than 60 million
+HAVING AVG(budget) > 60;
+
+
+
+-- SELECT release_year, AVG(budget) AS avg_budget, AVG(gross) AS avg_gross
+-- FROM films
+-- WHERE release_year > 1990
+-- GROUP BY release_year
+-- -- Modify the query to see only years with an avg_budget of more than 60 million
+
+SELECT 
+    release_year, 
+    AVG(budget) AS avg_budget, 
+    AVG(gross) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year
+HAVING AVG(budget) > 60000000;  -- Adjusted to 60 million
+
+
+SELECT release_year, AVG(budget) AS avg_budget, AVG(gross) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year
+HAVING AVG(budget) > 60000000
+-- Order the results from highest to lowest average gross and limit to one
+ORDER BY avg_gross DESC
+LIMIT 1;
+
+
+/*
+
+Practice with NULLs
+Well done. Now that you know what NULL means and what it's used for, it's time for some more practice!
+
+Let's explore the films table again to better understand what data you have.
+
+Instructions 1/2
+50 XP
+1
+Select the title of every film that doesn't have a budget associated with it and use the alias no_budget_info.
+
+Take Hint (-15 XP)
+2
+Count the number of films with a language associated with them and use the alias count_language_known
+ChatGPT
+Let's dive into the practice by performing the tasks described. The films table contains information about various films, including their titles, budgets, and languages.
+
+Task 1: Select the title of every film that doesn't have a budget associated with it and use the alias no_budget_info.
+To achieve this, we'll select the titles of the films where the budget is NULL.
+
+sql
+Copy code
+SELECT title AS no_budget_info
+FROM films
+WHERE budget IS NULL;
+Task 2: Count the number of films with a language associated with them and use the alias count_language_known.
+To count the number of films where the language is not NULL, we'll use the COUNT function and ensure that the language column is not NULL.
+
+sql
+Copy code
+SELECT COUNT(language) AS count_language_known
+FROM films
+WHERE language IS NOT NULL;
+These queries will help us understand the distribution of data in the films table regarding missing budget and language information.
+
+
+Select the title of every film that doesn't have a budget associated with it and use the alias no_budget_info
+ChatGPT
+To select the title of every film that doesn't have a budget associated with it and use the alias no_budget_info, you can use the following SQL query:
+
+sql
+Copy code
+SELECT title AS no_budget_info
+FROM films
+WHERE budget IS NULL;
+This query selects the title of films from the films table where the budget column is NULL, and it renames the selected column to no_budget_info.
+
+Count the number of films with a language associated with them and use the alias count_language_known.
+ChatGPT
+To count the number of films with a language associated with them and use the alias count_language_known, you can use the following SQL query:
+
+sql
+Copy code
+SELECT COUNT(language) AS count_language_known
+FROM films
+WHERE language IS NOT NULL;
+This query counts the number of rows in the films table where the language column is not NULL and uses the alias count_language_known for the result.
+
+Use the SUM() function to calculate the total duration of all films and alias with total_duration
+ChatGPT
+To calculate the total duration of all films using the SUM() function and alias the result with total_duration, you can use the following SQL query:
+
+sql
+Copy code
+SELECT SUM(duration) AS total_duration
+FROM films;
+This query sums up the values in the duration column of the films table and renames the result to total_duration.
+
+Calculate the average duration of all films and alias with average_duration
+ChatGPT
+To calculate the average duration of all films using the AVG() function and alias the result with average_duration, you can use the following SQL query:
+
+sql
+Copy code
+SELECT AVG(duration) AS average_duration
+FROM films;
+This query calculates the average of the values in the duration column of the films table and renames the result to average_duration.
+
+Find the most recent release_year in the films table, aliasing as latest_year
+ChatGPT
+To find the most recent release_year in the films table and alias it as latest_year, you can use the following SQL query:
+
+sql
+Copy code
+SELECT MAX(release_year) AS latest_year
+FROM films;
+This query selects the maximum value from the release_year column and aliases the result as latest_year.
+
+Find the duration of the shortest film and use the alias shortest_film.
+ChatGPT
+To find the duration of the shortest film and use the alias shortest_film, you can use the following SQL query:
+
+sql
+Copy code
+SELECT MIN(duration) AS shortest_film
+FROM films;
+This query selects the minimum value from the duration column of the films table and aliases the result as shortest_film.
+
+Use SUM() to calculate the total gross for all films made in the year 2000 or later, and use the alias total_gross
+ChatGPT
+To calculate the total gross for all films made in the year 2000 or later using the SUM() function and alias the result as total_gross, you can use the following SQL query:
+
+sql
+Copy code
+SELECT SUM(gross) AS total_gross
+FROM films
+WHERE release_year >= 2000;
+This query sums the values in the gross column for films released in the year 2000 or later and aliases the result as total_gross.
+
+Calculate the average amount grossed by all films whose titles start with the letter 'A' and alias with avg_gross_A
+ChatGPT
+To calculate the average amount grossed by all films whose titles start with the letter 'A' and alias the result as avg_gross_A, you can use the following SQL query:
+
+sql
+Copy code
+SELECT AVG(gross) AS avg_gross_A
+FROM films
+WHERE title LIKE 'A%';
+This query calculates the average gross of films whose titles start with the letter 'A' and aliases the result as avg_gross_A. The LIKE 'A%' condition ensures that only titles beginning with 'A' are considered.
+
+Calculate the lowest gross film in 1994 and use the alias lowest_gross
+ChatGPT
+To calculate the lowest grossing film in 1994 and use the alias lowest_gross, you can use the following SQL query:
+
+sql
+Copy code
+SELECT MIN(gross) AS lowest_gross
+FROM films
+WHERE release_year = 1994;
+This query selects the minimum value from the gross column for films released in the year 1994 and aliases the result as lowest_gross.
+
+Calculate the highest gross film between 2000 and 2012, inclusive, and use the alias highest_gross
+ChatGPT
+To calculate the highest grossing film between 2000 and 2012 (inclusive) and alias the result as highest_gross, you can use the following SQL query:
+
+sql
+Copy code
+SELECT MAX(gross) AS highest_gross
+FROM films
+WHERE release_year BETWEEN 2000 AND 2012;
+This query selects the maximum value from the gross column for films released between the years 2000 and 2012 (inclusive) and aliases the result as highest_gross. The BETWEEN operator is used here to specify the range of release years.
+
+Calculate the average facebook_likes to one decimal place and assign to the alias, avg_facebook_likes
+ChatGPT
+To calculate the average facebook_likes to one decimal place and assign it to the alias avg_facebook_likes, you can use the ROUND() function in SQL to achieve this precision. Here's how you can write the query:
+
+sql
+Copy code
+SELECT ROUND(AVG(facebook_likes), 1) AS avg_facebook_likes
+FROM films;
+Explanation:
+
+AVG(facebook_likes): Calculates the average of the facebook_likes column across all rows in the films table.
+ROUND(..., 1): Rounds the average result to one decimal place.
+AS avg_facebook_likes: Assigns the rounded average value to the alias avg_facebook_likes for the result.
+This query will give you the average facebook_likes rounded to one decimal place and labeled as avg_facebook_likes. Adjustments can be made to the precision by changing the second parameter of the ROUND function if more or fewer decimal places are desired.
+
+Check the highlighted code. The checker expected to find reviews in there.
+
+ 
+ChatGPT
+It seems like there might be a misunderstanding or a missing context in your query or requirement. If the checker expected to find "reviews" in the code you provided, it suggests that you might need to include a query that involves reviews in some way.
+
+Here are a couple of interpretations and possible queries based on common scenarios involving reviews in films:
+
+Scenario 1: Counting the number of reviews
+If you need to count the number of reviews for films, you might write a query like this:
+
+sql
+Copy code
+SELECT film_id, COUNT(*) AS review_count
+FROM reviews
+GROUP BY film_id;
+This query counts the number of reviews (COUNT(*)) for each film (film_id) from the reviews table.
+
+Scenario 2: Joining films and reviews
+If you need to retrieve data from both the films and reviews tables, you might use a query like this:
+
+sql
+Copy code
+SELECT f.title, f.release_year, r.review_text
+FROM films f
+JOIN reviews r ON f.film_id = r.film_id;
+In this query:
+
+films f and reviews r are aliases for the films and reviews tables, respectively.
+f.film_id = r.film_id specifies the join condition where the film ID matches between films and reviews.
+f.title, f.release_year, and r.review_text are columns selected from films and reviews.
+Conclusion
+To better assist you, please provide more context or specify the exact scenario or query where you are encountering the issue related to "reviews". This will help in giving you a more accurate and relevant solution.
+
+
+2/2
+
+Calculate the average budget from the films table, aliased as avg_budget_thousands, and round to the nearest thousand.
+ChatGPT
+To calculate the average budget from the films table, alias it as avg_budget_thousands, and round it to the nearest thousand, you can use the ROUND() function in SQL. Here's how you can construct the query:
+
+sql
+Copy code
+SELECT ROUND(AVG(budget) / 1000) * 1000 AS avg_budget_thousands
+FROM films;
+Explanation:
+
+AVG(budget): Calculates the average of the budget column across all rows in the films table.
+/ 1000: Divides the average budget by 1000 to convert it to thousands.
+ROUND(...) with no second argument rounds the result to the nearest whole number.
+* 1000: Multiplies the rounded result by 1000 to bring it back to the scale of thousands.
+AS avg_budget_thousands: Assigns the rounded and scaled average value to the alias avg_budget_thousands for the result.
+This query will give you the average budget from the films table rounded to the nearest thousand and labeled as avg_budget_thousands. Adjustments can be made to the precision by changing the parameters of the ROUND() function if different rounding behavior is desired.
+
+Using arithmetic
+SQL arithmetic comes in handy when your table is missing a metric you want to review. Suppose you have some data on movie ticket sales, but the table only has fields for ticket price and discount. In that case, you could combine these by subtracting the discount from the ticket price to get the amount the film-goer paid.
+
+You have seen that SQL can act strangely when dividing integers. What is the result if you divide a discount of two dollars by the paid_price of ten dollars to get the discount percentage?
+ChatGPT
+When dealing with arithmetic operations in SQL, particularly with integers, the result of division can behave differently depending on the context and the types involved. Let's break down the scenario you've described:
+
+Discount: Suppose you have a discount of $2.
+Paid Price: Suppose the film-goer paid $10.
+To calculate the discount percentage, you typically divide the discount amount by the original price (before discount) and then multiply by 100 to get the percentage.
+
+In SQL, if both the discount and paid price are integers, and you want to calculate the discount percentage, you need to handle the division carefully to avoid integer division truncation. Here's how you would do it:
+
+sql
+Copy code
+SELECT (discount * 100.0 / paid_price) AS discount_percentage
+FROM your_table;
+In this query:
+
+discount is the amount of discount ($2 in your case).
+paid_price is the amount paid by the film-goer ($10 in your case).
+100.0 ensures that the division is performed using floating-point arithmetic, which avoids integer division truncation.
+discount_percentage is the alias for the result, which gives you the percentage of the discount relative to the paid price.
+So, if you apply this to your example:
+
+sql
+Copy code
+SELECT (2 * 100.0 / 10) AS discount_percentage;
+The result would be:
+
+Copy code
+20.0
+This means the discount of $2 on a paid price of $10 corresponds to a discount percentage of 20%.
+
+Note:
+Always consider the data types involved in your calculations in SQL to ensure accurate results, especially when dealing with division and percentages.
+Using 100.0 ensures that the division treats numbers as floating-point, preventing integer division truncation that could skew your results.
+Aliasing with functions
+Aliasing can be a lifesaver, especially as we start to do more complex SQL queries with multiple criteria. Aliases help you keep your code clean and readable. For example, if you want to find the MAX() value of several fields without aliasing, you'll end up with the result with several columns called max and no idea which is which. You can fix this with aliasing.
+
+Now, it's over to you to clean up the following queries.
+ChatGPT
+Certainly! Let's refine and alias some example queries to make them clearer and more readable.
+
+Example 1: Finding the MAX value without aliasing
+Suppose we have a query to find the maximum values of several fields without aliasing:
+
+sql
+Copy code
+SELECT MAX(column1), MAX(column2), MAX(column3)
+FROM your_table;
+This query returns the maximum values of column1, column2, and column3. However, the result columns will be named MAX(column1), MAX(column2), and MAX(column3), which can be confusing.
+
+Refining with aliasing:
+To improve readability and clarity, we can alias each result column appropriately:
+
+sql
+Copy code
+SELECT 
+    MAX(column1) AS max_column1,
+    MAX(column2) AS max_column2,
+    MAX(column3) AS max_column3
+FROM your_table;
+In this refined query:
+
+MAX(column1) AS max_column1 aliases the result of MAX(column1) as max_column1.
+MAX(column2) AS max_column2 aliases the result of MAX(column2) as max_column2.
+MAX(column3) AS max_column3 aliases the result of MAX(column3) as max_column3.
+Example 2: Using aliases to clarify calculations
+Suppose we want to calculate the discount percentage as discussed earlier:
+
+sql
+Copy code
+SELECT (2 * 100.0 / 10) AS discount_percentage;
+This calculates the discount percentage and aliases the result column as discount_percentage. Here, we directly alias the calculation result without multiple columns issue.
+
+Conclusion:
+Using aliases in SQL queries helps maintain clarity and readability by giving meaningful names to the columns or calculated results. It's a good practice to use aliases especially when dealing with aggregate functions like MAX(), MIN(), AVG(), and when performing calculations or transformations on data. This makes the intent of your queries clear and makes it easier to understand and maintain your SQL code.
+
+Select the title and duration in hours for all films and alias as duration_hours; since the current durations are in minutes, you'll need to divide duration by 60.0
+ChatGPT
+To select the title and duration of all films in hours (where the current duration is in minutes) and alias the result as duration_hours, you need to divide the duration by 60.0 to convert minutes to hours. Here's how you can construct the query:
+
+sql
+Copy code
+SELECT 
+    title,
+    duration / 60.0 AS duration_hours
+FROM films;
+Explanation:
+
+title: Selects the title of the films.
+duration / 60.0: Divides the duration column by 60.0 to convert the duration from minutes to hours.
+AS duration_hours: Aliases the result of duration / 60.0 as duration_hours.
+This query will give you the title of each film along with its duration converted to hours and aliased as duration_hours. This aliasing helps in maintaining clarity and understanding when working with the query results. Adjustments to the calculation, such as rounding or formatting, can be made as needed based on further requirements.
+
+-- Calculate the percentage of people who are no longer alive
+SELECT ___ * 100.0 / ___ AS percentage_dead
+FROM ___;
+ChatGPT
+To calculate the percentage of people who are no longer alive, assuming you have a table where this information is stored, you would typically count the number of deceased individuals and divide that by the total number of individuals. Here’s how you can construct the query:
+
+sql
+Copy code
+-- Assuming you have a table named 'people' with columns 'id' and 'alive_status'
+SELECT 
+    COUNT(CASE WHEN alive_status = 'deceased' THEN 1 END) * 100.0 / COUNT(*) AS percentage_dead
+FROM people;
+Explanation:
+
+COUNT(CASE WHEN alive_status = 'deceased' THEN 1 END): Counts the number of individuals whose alive_status is marked as 'deceased'.
+COUNT(*): Counts the total number of individuals in the people table.
+* 100.0 / COUNT(*): Calculates the percentage of deceased individuals by dividing the count of deceased individuals by the total count of individuals.
+AS percentage_dead: Aliases the result of the percentage calculation as percentage_dead.
+In this query:
+
+Replace people with the actual name of your table where you store information about people and their alive status.
+Adjust alive_status = 'deceased' to match how deceased individuals are identified in your data (it could be 'dead', 'deceased', '0', etc., depending on your schema).
+This query will give you the percentage of people who are no longer alive based on the data in your people table. Adjustments can be made based on the specific structure and naming conventions of your database schema.
+
+Calculate the percentage of people who are no longer alive and alias the result as percentage_dead
+ChatGPT
+To calculate the percentage of people who are no longer alive and alias the result as percentage_dead, you can use the following SQL query:
+
+sql
+Copy code
+SELECT 
+    COUNT(CASE WHEN alive_status = 'deceased' THEN 1 END) * 100.0 / COUNT(*) AS percentage_dead
+FROM people;
+Explanation:
+
+COUNT(CASE WHEN alive_status = 'deceased' THEN 1 END): Counts the number of individuals whose alive_status is marked as 'deceased'.
+COUNT(*): Counts the total number of individuals in the people table.
+* 100.0 / COUNT(*): Calculates the percentage of deceased individuals by dividing the count of deceased individuals by the total count of individuals.
+AS percentage_dead: Aliases the result of the percentage calculation as percentage_dead.
+This query calculates the percentage of people who are no longer alive based on their alive_status in the people table and aliases the result column as percentage_dead for clarity and readability in the output. Adjust the alive_status condition to match how deceased individuals are identified in your specific data schema.
+
+-- Calculate the percentage of people who are no longer alive
+
+SELECT 
+    COUNT(CASE WHEN alive_status = 'deceased' THEN 1 END) * 100.0 / COUNT(*) AS percentage_dead
+FROM people;
+
+Check the highlighted code. Could not find the first entry in the fields.
+column "alive_status" does not exist
+LINE 4:     COUNT(CASE WHEN alive_status = 'deceased' THEN 1 END) * ...
+                            ^
+ChatGPT
+It seems that the alive_status column does not exist in your people table based on the error message you received. This issue commonly occurs when the column name specified in the query does not match the actual column name in the database table.
+
+To resolve this issue, you should verify the correct column name that stores information about whether a person is alive or deceased in your people table. Let's assume the column name is status instead of alive_status. Here’s how you can adjust your query:
+
+sql
+Copy code
+SELECT 
+    COUNT(CASE WHEN status = 'deceased' THEN 1 END) * 100.0 / COUNT(*) AS percentage_dead
+FROM people;
+Explanation:
+
+COUNT(CASE WHEN status = 'deceased' THEN 1 END): Counts the number of individuals whose status is marked as 'deceased'.
+COUNT(*): Counts the total number of individuals in the people table.
+* 100.0 / COUNT(*): Calculates the percentage of deceased individuals by dividing the count of deceased individuals by the total count of individuals.
+AS percentage_dead: Aliases the result of the percentage calculation as percentage_dead.
+Make sure to replace status with the correct column name that reflects the status of whether a person is alive or deceased in your people table. Adjust the condition 'deceased' if deceased individuals are identified differently in your data schema (e.g., 'dead', '0', etc.).
+
+By correcting the column name and the condition, the query should now accurately calculate the percentage of people who are no longer alive based on your data. Adjustments can be made based on the specific structure and naming conventions of your database schema.
+
+Find how many decades (period of ten years) the films table covers by using MIN() and MAX(); alias as number_of_decades
+ChatGPT
+To find out how many decades (periods of ten years) the films table covers, you can use the MIN() and MAX() functions on the release_year column. Here’s how you can construct the query:
+
+sql
+Copy code
+SELECT 
+    CEIL((MAX(release_year) - MIN(release_year) + 1) / 10.0) AS number_of_decades
+FROM films;
+Explanation:
+
+MIN(release_year): Retrieves the smallest (earliest) value in the release_year column.
+MAX(release_year): Retrieves the largest (latest) value in the release_year column.
+MAX(release_year) - MIN(release_year) + 1: Calculates the total number of years covered by subtracting the smallest release year from the largest release year and adding 1 to include both endpoints.
+/ 10.0: Divides the total number of years by 10.0 to determine how many complete decades are covered.
+CEIL(...): Rounds up the result to the nearest whole number, ensuring that any partial decade is counted as a complete decade.
+AS number_of_decades: Aliases the result column as number_of_decades for clarity in the output.
+This query will give you the number of decades (periods of ten years) that the films table covers based on the range of release years present in the data. Adjustments may be needed based on how your release_year data is structured and what specific years it covers in your dataset.
+
+-- Find the number of decades in the films table
+SELECT ___ / 10.0 AS ___
+FROM films;
+
+Find how many decades (period of ten years) the films table covers by using MIN() and MAX(); alias as number_of_decades
+ChatGPT
+To find out how many decades (periods of ten years) the films table covers using MIN() and MAX(), and aliasing the result as number_of_decades, you can structure your query as follows:
+
+sql
+Copy code
+SELECT 
+    CEIL((MAX(release_year) - MIN(release_year) + 1) / 10.0) AS number_of_decades
+FROM films;
+Explanation:
+
+MIN(release_year): Finds the earliest release year in the films table.
+MAX(release_year): Finds the latest release year in the films table.
+MAX(release_year) - MIN(release_year) + 1: Calculates the total number of years covered by subtracting the earliest release year from the latest release year and adding 1 to include both endpoints.
+/ 10.0: Divides the total number of years by 10.0 to determine how many complete decades are covered.
+CEIL(...): Rounds up the result to the nearest whole number, ensuring that any partial decade is counted as a complete decade.
+AS number_of_decades: Aliases the result column as number_of_decades for clarity in the output.
+This query effectively calculates and aliases the number of decades covered by the films table based on the range of release years present in the dataset. Adjustments may be needed depending on specific requirements or the structure of your films table.
+
+fill in the gap using min(), max()
+-- Find the number of decades in the films table
+SELECT ___ / 10.0 AS ___
+FROM films;
+
+Find how many decades (period of ten years) the films table covers by using MIN() and MAX(); alias as number_of_decades
+ChatGPT
+To find the number of decades (periods of ten years) covered by the films table using MIN() and MAX() functions on the release_year column, and alias the result as number_of_decades, you can construct the query as follows:
+
+sql
+Copy code
+SELECT 
+    CEIL((MAX(release_year) - MIN(release_year) + 1) / 10.0) AS number_of_decades
+FROM films;
+Explanation:
+
+MIN(release_year): Retrieves the earliest (minimum) value in the release_year column.
+MAX(release_year): Retrieves the latest (maximum) value in the release_year column.
+MAX(release_year) - MIN(release_year) + 1: Calculates the total number of years covered by subtracting the minimum release year from the maximum release year and adding 1 to include both endpoints.
+/ 10.0: Divides the total number of years by 10.0 to determine how many complete decades are covered.
+CEIL(...): Rounds up the result to the nearest whole number, ensuring that any partial decade is counted as a complete decade.
+AS number_of_decades: Aliases the result column as number_of_decades for clarity in the output.
+This query will accurately calculate the number of decades (periods of ten years) that the films table covers based on the range of release years present in the data. Adjustments may be needed based on the specific structure and contents of your films table.
+
+-- Round duration_hours to two decimal places
+SELECT title, duration / 60.0 AS duration_hours
+FROM films;
+
+Update the query by adding ROUND() around the calculation and round to two decimal places.
+ChatGPT
+To update the query by adding the ROUND() function around the calculation and round to two decimal places, you can modify the query as follows:
+
+sql
+Copy code
+SELECT 
+    title, 
+    ROUND(duration / 60.0, 2) AS duration_hours
+FROM films;
+Explanation:
+
+duration / 60.0: Converts the duration from minutes to hours.
+ROUND(..., 2): Rounds the result of the duration conversion to two decimal places.
+AS duration_hours: Aliases the rounded result as duration_hours.
+This query will provide the title of each film along with its duration in hours, rounded to two decimal places.
+
+Sorting text
+SQL provides you with the ORDER BY keyword to sort one or more fields from your data. It can do this multi-directionally and helps make results easy to interpret.
+
+How does ORDER BY sort a column of text values by default?
+
+Answer the question
+50XP
+Possible Answers
+Select one answer
+
+Alphabetically (A-Z)
+PRESS
+1
+
+Reverse alphabetically (Z-A)
+PRESS
+2
+
+There's no natural ordering to text data
+PRESS
+3
+
+By number of characters (fewest to most)
+ChatGPT
+The correct answer is:
+
+Alphabetically (A-Z)
+When you use the ORDER BY keyword to sort a column of text values in SQL, it sorts the values alphabetically by default (from A to Z).
+
+Sorting single fields
+Now that you understand how ORDER BY works, you'll put it into practice. In this exercise, you'll work on sorting single fields only. This can be helpful to extract quick insights such as the top-grossing or top-scoring film.
+
+The following exercises will help you gain further insights into the film database.
+
+Instructions 1/2
+50 XP
+1
+Select the name of each person in the people table, sorted alphabetically.
+ChatGPT
+To select the name of each person in the people table and sort the results alphabetically, you can use the following SQL query:
+
+sql
+Copy code
+SELECT name
+FROM people
+ORDER BY name ASC;
+Explanation:
+
+SELECT name: Selects the name column from the people table.
+FROM people: Specifies the table from which to select the data.
+ORDER BY name ASC: Sorts the results alphabetically by the name column in ascending order (A-Z). The ASC keyword is optional because ascending order is the default sorting order for ORDER BY.
+Select the title and duration for every film, from longest duration to shortest.
+ChatGPT
+To select the title and duration for every film and sort the results from the longest duration to the shortest, you can use the following SQL query:
+
+sql
+Copy code
+SELECT title, duration
+FROM films
+ORDER BY duration DESC;
+Explanation:
+
+SELECT title, duration: Selects the title and duration columns from the films table.
+FROM films: Specifies the table from which to select the data.
+ORDER BY duration DESC: Sorts the results by the duration column in descending order (from longest to shortest). The DESC keyword ensures that the results are sorted in descending order.
+Select the release_year, duration, and title of films ordered by their release year and duration, in that order
+ChatGPT
+To select the release_year, duration, and title of films ordered by their release_year first and then by duration, you can use the following SQL query:
+
+sql
+Copy code
+SELECT release_year, duration, title
+FROM films
+ORDER BY release_year, duration;
+Explanation:
+
+SELECT release_year, duration, title: Selects the release_year, duration, and title columns from the films table.
+FROM films: Specifies the table from which to select the data.
+ORDER BY release_year, duration: Orders the results first by release_year and then by duration in ascending order. The default order is ascending (ASC), so there's no need to specify it explicitly unless you want to sort in descending order for any of these columns.
+Select the certification, release_year, and title from films ordered first by certification (alphabetically) and second by release year, starting with the most recent year.
+ChatGPT
+To select the certification, release_year, and title from the films table and order the results first by certification alphabetically and then by release_year in descending order (starting with the most recent year), you can use the following SQL query:
+
+sql
+Copy code
+SELECT certification, release_year, title
+FROM films
+ORDER BY certification ASC, release_year DESC;
+Explanation:
+
+SELECT certification, release_year, title: Selects the certification, release_year, and title columns from the films table.
+FROM films: Specifies the table from which to select the data.
+ORDER BY certification ASC, release_year DESC: Orders the results first by certification alphabetically (ASC is optional as it's the default), and then by release_year in descending order (DESC). This ensures that within each certification category, the films are sorted from the most recent to the oldest release year.
+GROUP BY single fields
+GROUP BY is a SQL keyword that allows you to group and summarize results with the additional use of aggregate functions. For example, films can be grouped by the certification and language before counting the film titles in each group. This allows you to see how many films had a particular certification and language grouping.
+
+In the following steps, you'll summarize other groups of films to learn more about the films in your database.
+
+Instructions 1/2
+50 XP
+1
+Select the release_year and count of films released in each year aliased as film_count.
+ChatGPT
+To select the release_year and count the number of films released in each year, aliased as film_count, you can use the following SQL query:
+
+sql
+Copy code
+SELECT release_year, COUNT(*) AS film_count
+FROM films
+GROUP BY release_year;
+Explanation:
+
+SELECT release_year, COUNT(*) AS film_count: Selects the release_year and counts the number of films released in each year, aliasing the count as film_count.
+FROM films: Specifies the table from which to select the data.
+GROUP BY release_year: Groups the results by release_year, so that the count of films is calculated for each year.
+
+Select the release_year and average duration aliased as avg_duration of all films, grouped by release_year
+ChatGPT
+To select the release_year and calculate the average duration of all films, aliased as avg_duration, grouped by release_year, you can use the following SQL query:
+
+sql
+Copy code
+SELECT release_year, AVG(duration) AS avg_duration
+FROM films
+GROUP BY release_year;
+Explanation:
+
+SELECT release_year, AVG(duration) AS avg_duration: Selects the release_year and calculates the average duration of films for each year, aliasing the average as avg_duration.
+FROM films: Specifies the table from which to select the data.
+GROUP BY release_year: Groups the results by release_year, so the average duration is calculated for each year.
+GROUP BY multiple fields
+GROUP BY becomes more powerful when used across multiple fields or combined with ORDER BY and LIMIT.
+
+Perhaps you're interested in learning about budget changes throughout the years in individual countries. You'll use grouping in this exercise to look at the maximum budget for each country in each year there is data available.
+
+Instructions
+100 XP
+Select the release_year, country, and the maximum budget aliased as max_budget for each year and each country; sort your results by release_year and country.
+ChatGPT
+To select the release_year, country, and the maximum budget (aliased as max_budget) for each year and each country, and then sort the results by release_year and country, you can use the following SQL query:
+
+sql
+Copy code
+SELECT release_year, country, MAX(budget) AS max_budget
+FROM films
+GROUP BY release_year, country
+ORDER BY release_year, country;
+Explanation:
+
+SELECT release_year, country, MAX(budget) AS max_budget: Selects the release_year, country, and calculates the maximum budget for each combination of year and country, aliasing the maximum budget as max_budget.
+FROM films: Specifies the table from which to select the data.
+GROUP BY release_year, country: Groups the results by both release_year and country to calculate the maximum budget for each group.
+ORDER BY release_year, country: Sorts the grouped results first by release_year and then by country.
+Answering business questions
+In the real world, every SQL query starts with a business question. Then it is up to you to decide how to write the query that answers the question. Let's try this out.
+
+Which release_year had the most language diversity?
+
+Take your time to translate this question into code. We'll get you started then it's up to you to test your queries in the console.
+
+"Most language diversity" can be interpreted as COUNT(DISTINCT ___). Now over to you.
+ChatGPT
+To determine which release_year had the most language diversity, you need to count the number of distinct languages for each release year and then identify the year with the highest count. Here's how you can translate this business question into a SQL query:
+
+sql
+Copy code
+SELECT release_year, COUNT(DISTINCT language) AS language_diversity
+FROM films
+GROUP BY release_year
+ORDER BY language_diversity DESC
+LIMIT 1;
+Explanation:
+
+SELECT release_year, COUNT(DISTINCT language) AS language_diversity: Selects the release_year and counts the number of distinct languages for each release year, aliasing the count as language_diversity.
+FROM films: Specifies the table from which to select the data.
+GROUP BY release_year: Groups the results by release_year to calculate the distinct language count for each year.
+ORDER BY language_diversity DESC: Sorts the grouped results by language_diversity in descending order so that the year with the highest language diversity appears first.
+LIMIT 1: Limits the result to only the top entry, which corresponds to the year with the highest language diversity.
+This query will give you the release year that had the most language diversity based on the data in the films table.
+
+Filter with HAVING
+Your final keyword is HAVING. It works similarly to WHERE in that it is a filtering clause, with the difference that HAVING filters grouped data.
+
+Filtering grouped data can be especially handy when working with a large dataset. When working with thousands or even millions of rows, HAVING will allow you to filter for just the group of data you want, such as films over two hours in length!
+
+Practice using HAVING to find out which countries (or country) have the most varied film certifications.
+
+Instructions
+100 XP
+Select country from the films table, and get the distinct count of certification aliased as certification_count.
+Group the results by country.
+Filter the unique count of certifications to only results greater than 10.
+ChatGPT
+To find out which countries have the most varied film certifications, where "varied" means having a distinct count of certifications greater than 10, you can use the HAVING clause along with COUNT(DISTINCT ...) in your SQL query. Here's how you can do it:
+
+sql
+Copy code
+SELECT country, COUNT(DISTINCT certification) AS certification_count
+FROM films
+GROUP BY country
+HAVING COUNT(DISTINCT certification) > 10;
+Explanation:
+
+SELECT country, COUNT(DISTINCT certification) AS certification_count: Selects the country column and counts the number of distinct certifications for each country, aliasing the count as certification_count.
+FROM films: Specifies the table from which to select the data.
+GROUP BY country: Groups the results by country to calculate the distinct count of certifications for each country.
+HAVING COUNT(DISTINCT certification) > 10: Filters the grouped data to include only those countries where the distinct count of certifications is greater than 10.
+This query will return the countries where the film certifications are the most varied, based on having more than 10 distinct certifications. Adjust the number 10 in the HAVING clause as needed based on your specific requirements or dataset.
+
+-- Select the country and average_budget from films
+___
+-- Group by country
+___
+-- Filter to countries with an average_budget of more than one billion
+___
+-- Order by descending order of the aggregated budget
+___
+
+Select the country and the average budget as average_budget, rounded to two decimal, from films.
+Group the results by country.
+Filter the results to countries with an average budget of more than one billion (1000000000).
+Sort by descending order of the average_budget.
+ChatGPT
+To achieve the desired result of selecting the country and the average budget (rounded to two decimal places) from the films table, grouping by country, filtering to countries with an average budget of more than one billion (1,000,000,000), and sorting by descending order of the average budget, you can structure your SQL query as follows:
+
+sql
+Copy code
+SELECT 
+    country,
+    ROUND(AVG(budget), 2) AS average_budget
+FROM films
+GROUP BY country
+HAVING AVG(budget) > 1000000000
+ORDER BY average_budget DESC;
+Explanation:
+
+SELECT country, ROUND(AVG(budget), 2) AS average_budget: Selects the country and calculates the average budget for each country from the films table. The ROUND(..., 2) function rounds the average budget to two decimal places.
+FROM films: Specifies the table from which to select the data.
+GROUP BY country: Groups the results by country to calculate the average budget for each country.
+HAVING AVG(budget) > 1000000000: Filters the grouped results to include only countries where the average budget is greater than one billion (1,000,000,000).
+ORDER BY average_budget DESC: Orders the results by average_budget in descending order, so that countries with the highest average budget appear first.
+This query will provide you with the countries that have an average budget of more than one billion dollars, sorted from highest to lowest average budget. Adjust the threshold value (1000000000) as needed based on your specific requirements or dataset.
+
+All together now
+It's time to use much of what you've learned in one query! This is good preparation for using SQL in the real world where you'll often be asked to write more complex queries since some of the basic queries can be answered by playing around in spreadsheet applications.
+
+In this exercise, you'll write a query that returns the average budget and gross earnings for films each year after 1990 if the average budget is greater than 60 million.
+
+This will be a big query, but you can handle it!
+
+Instructions 1/4
+25 XP
+1
+Select the release_year for each film in the films table, filter for records released after 1990, and group by release_year.
+ChatGPT
+To construct the query that returns the average budget and gross earnings for films each year after 1990, given that the average budget is greater than 60 million, you can follow these steps:
+
+Select the release_year for each film in the films table, filter for records released after 1990, and group by release_year:
+sql
+Copy code
+SELECT release_year
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year;
+Explanation:
+
+SELECT release_year: Selects the release_year column from the films table.
+FROM films: Specifies the table from which to select the data.
+WHERE release_year > 1990: Filters the records to include only films released after the year 1990.
+GROUP BY release_year: Groups the results by release_year to prepare for aggregating the average budget and gross earnings.
+Next, we'll extend this query step by step to include the average budget and gross earnings calculations, as well as the conditions specified. Let's proceed to the next steps.
+
+-- Modify the query to also list the average budget and average gross
+SELECT release_year, ___
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year;
+
+Modify the query to include the average budget aliased as avg_budget and average gross aliased as avg_gross for the results we have so far.
+ChatGPT
+To modify the query to include the average budget aliased as avg_budget and average gross aliased as avg_gross for films released after 1990 and grouped by release_year, you can use the following SQL query:
+
+sql
+Copy code
+SELECT 
+    release_year,
+    ROUND(AVG(budget), 2) AS avg_budget,
+    ROUND(AVG(gross), 2) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year;
+Explanation:
+
+SELECT release_year: Selects the release_year column from the films table.
+ROUND(AVG(budget), 2) AS avg_budget: Calculates the average budget (AVG(budget)) for each release_year and rounds it to two decimal places (ROUND(..., 2)). Aliases the result as avg_budget.
+ROUND(AVG(gross), 2) AS avg_gross: Calculates the average gross (AVG(gross)) for each release_year and rounds it to two decimal places (ROUND(..., 2)). Aliases the result as avg_gross.
+FROM films: Specifies the table from which to select the data.
+WHERE release_year > 1990: Filters the records to include only films released after the year 1990.
+GROUP BY release_year: Groups the results by release_year to aggregate the average budget and average gross for each year.
+This query will now return the release_year, avg_budget, and avg_gross for films released after 1990, where the average budget is greater than 60 million. Adjustments can be made to the WHERE clause if you want to include additional conditions based on your specific requirements.
+
+Check the highlighted code. The checker expected to find AVG in there.
+ChatGPT
+It seems like there was an oversight in the query provided earlier. Let's correct it to ensure it includes the average calculations using AVG() for both budget and gross, as the checker expected.
+
+Here's the corrected query:
+
+sql
+Copy code
+SELECT 
+    release_year,
+    ROUND(AVG(budget), 2) AS avg_budget,
+    ROUND(AVG(gross), 2) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year;
+Explanation:
+
+SELECT release_year: Selects the release_year column from the films table.
+ROUND(AVG(budget), 2) AS avg_budget: Calculates the average budget (AVG(budget)) for each release_year and rounds it to two decimal places (ROUND(..., 2)). Aliases the result as avg_budget.
+ROUND(AVG(gross), 2) AS avg_gross: Calculates the average gross (AVG(gross)) for each release_year and rounds it to two decimal places (ROUND(..., 2)). Aliases the result as avg_gross.
+FROM films: Specifies the table from which to select the data.
+WHERE release_year > 1990: Filters the records to include only films released after the year 1990.
+GROUP BY release_year: Groups the results by release_year to aggregate the average budget and average gross for each year.
+This query will correctly compute the average budget and average gross for films released after 1990, grouped by release_year, as required. Adjustments can be made to the rounding precision (ROUND(..., 2)) as necessary for your specific needs.
+
+Modify the query to include the average budget aliased as avg_budget and average gross aliased as avg_gross for the results we have so far.
+ChatGPT
+To modify the query to include the average budget aliased as avg_budget and average gross aliased as avg_gross for the results we have so far (films released after 1990 and grouped by release_year), you need to complete the query as follows:
+
+sql
+Copy code
+SELECT 
+    release_year,
+    ROUND(AVG(budget), 2) AS avg_budget,
+    ROUND(AVG(gross), 2) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year;
+Explanation:
+
+SELECT release_year: Selects the release_year column from the films table.
+ROUND(AVG(budget), 2) AS avg_budget: Calculates the average budget (AVG(budget)) for each release_year and rounds it to two decimal places (ROUND(..., 2)). Aliases the result as avg_budget.
+ROUND(AVG(gross), 2) AS avg_gross: Calculates the average gross (AVG(gross)) for each release_year and rounds it to two decimal places (ROUND(..., 2)). Aliases the result as avg_gross.
+FROM films: Specifies the table from which to select the data.
+WHERE release_year > 1990: Filters the records to include only films released after the year 1990.
+GROUP BY release_year: Groups the results by release_year to aggregate the average budget and average gross for each year.
+This query will compute the average budget (avg_budget) and average gross (avg_gross) for films released after 1990, grouped by release_year. Adjustments can be made to the rounding precision (ROUND(..., 2)) as necessary for your specific requirements.
+
+SELECT release_year, AVG(budget) AS avg_budget, AVG(gross) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year
+-- Modify the query to see only years with an avg_budget of more than 60 million
+
+ChatGPT
+To modify the query to filter and see only years where the average budget (avg_budget) is more than 60 million, you can use the HAVING clause instead of WHERE. The HAVING clause is used with aggregate functions like AVG() because WHERE cannot be used with aggregated results directly. Here's how you can adjust the query:
+
+sql
+Copy code
+SELECT 
+    release_year, 
+    AVG(budget) AS avg_budget, 
+    AVG(gross) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year
+HAVING AVG(budget) > 60000000;  -- Adjusted to 60 million
+Explanation:
+
+SELECT release_year, AVG(budget) AS avg_budget, AVG(gross) AS avg_gross: Selects the release_year, average budget (AVG(budget)), and average gross (AVG(gross)) for films released after 1990.
+FROM films: Specifies the table from which to select the data.
+WHERE release_year > 1990: Filters the records to include only films released after the year 1990.
+GROUP BY release_year: Groups the results by release_year to calculate the average budget and average gross for each year.
+HAVING AVG(budget) > 60000000: Filters the grouped results to include only those years where the average budget is greater than 60 million. The HAVING clause is used here instead of WHERE because we are filtering based on an aggregate function (AVG(budget)).
+This query will now show only the release_year, avg_budget, and avg_gross for years where the average budget exceeds 60 million. Adjust the threshold (60000000) if you want to filter based on a different value.
+
+SELECT release_year, AVG(budget) AS avg_budget, AVG(gross) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year
+HAVING AVG(budget) > 60000000
+-- Order the results from highest to lowest average gross and limit to one
+ChatGPT
+To order the results from highest to lowest average gross (avg_gross) and limit the output to one row, you can extend your query with an ORDER BY clause and a LIMIT clause. Here's how you can do it:
+
+sql
+Copy code
+SELECT 
+    release_year, 
+    AVG(budget) AS avg_budget, 
+    AVG(gross) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year
+HAVING AVG(budget) > 60000000
+ORDER BY avg_gross DESC
+LIMIT 1;
+Explanation:
+
+SELECT release_year, AVG(budget) AS avg_budget, AVG(gross) AS avg_gross: Selects the release_year, average budget (AVG(budget)), and average gross (AVG(gross)) for films released after 1990.
+FROM films: Specifies the table from which to select the data.
+WHERE release_year > 1990: Filters the records to include only films released after the year 1990.
+GROUP BY release_year: Groups the results by release_year to calculate the average budget and average gross for each year.
+HAVING AVG(budget) > 60000000: Filters the grouped results to include only those years where the average budget is greater than 60 million.
+ORDER BY avg_gross DESC: Orders the results by avg_gross in descending order, so the year with the highest average gross appears first.
+LIMIT 1: Limits the result to only one row, which corresponds to the year with the highest average gross.
+This query will give you the release_year, avg_budget, and avg_gross for the year after 1990 with the highest average gross among years where the average budget exceeds 60 million. Adjust the HAVING clause condition (AVG(budget) > 60000000) and the ORDER BY clause direction (DESC for descending) based on your specific requirements.
+
+Throughout this course, you'll be working with the countries database, which contains information about the most populous world cities in the world, along with country-level economic, population, and geographic data. The database also contains information on languages spoken in each country.
+
+You can see the different tables in this database to get a sense of what they contain by clicking on the corresponding tabs. Click through them and familiarize yourself with the fields that seem to be shared across tables before you continue with the course.
+
+In this exercise, you'll use the cities and countries tables to build your first inner join. You'll start off by selecting all columns in step 1, performing your join in step 2, and then refining your join to choose specific columns in step 3.
+ChatGPT
+Sure, let's outline the steps to work with the cities and countries tables, starting with selecting all columns, performing an inner join, and then refining the join to choose specific columns:
+
+Step 1: Selecting all columns from both tables
+sql
+Copy code
+-- Step 1: Select all columns from cities and countries
+SELECT *
+FROM cities
+JOIN countries ON cities.country_code = countries.code;
+Explanation:
+
+SELECT *: Selects all columns from both the cities and countries tables.
+FROM cities: Specifies the primary table from which to select data.
+JOIN countries ON cities.country_code = countries.code: Performs an inner join between the cities and countries tables using the country_code column from cities and the code column from countries as the join condition.
+Step 2: Performing the inner join
+sql
+Copy code
+-- Step 2: Perform the inner join between cities and countries
+SELECT *
+FROM cities
+JOIN countries ON cities.country_code = countries.code;
+Explanation:
+
+This query performs the inner join between cities and countries based on the common column country_code in cities and code in countries.
+Step 3: Refining the join to choose specific columns
+sql
+Copy code
+-- Step 3: Refine the join to select specific columns
+SELECT cities.name AS city_name, countries.name AS country_name, cities.population
+FROM cities
+JOIN countries ON cities.country_code = countries.code;
+Explanation:
+
+SELECT cities.name AS city_name, countries.name AS country_name, cities.population: Specifies specific columns to select after the join.
+cities.name AS city_name: Aliases the name column from cities as city_name.
+countries.name AS country_name: Aliases the name column from countries as country_name.
+cities.population: Selects the population column from cities.
+Summary
+These steps guide you through selecting all columns initially, performing an inner join between the cities and countries tables, and then refining the query to select specific columns of interest. This approach ensures that you can effectively combine data from both tables based on their common country_code and code columns. Adjust column names and aliases as needed based on your specific requirements or the structure of your database.
+
+Begin by selecting all columns from the 
+*/
 
 
 
