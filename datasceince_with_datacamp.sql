@@ -3571,9 +3571,117 @@ Bhojpuri is spoken in two countries: Similar to the previous option, the query c
 Since the query doesn't target Armenia specifically and focuses on showing all language-country combinations, it cannot determine the number of languages spoken in Armenia. Therefore, the first option ("There are at least three languages spoken in Armenia.") is incorrect.
 
 
+this is the correct solution
+-- Select relevant fields
+SELECT name, year, fertility_rate
+FROM countries AS c
+
+-- Inner join countries and populations, aliased, on code
+INNER JOIN populations AS p ON c.code = p.country_code;
+
+correct solution
+-- Select relevant fields
+SELECT 
+    name, 
+    e.year, 
+    fertility_rate,
+    unemployment_rate
+-- Inner join countries and populations, aliased, on code
+FROM 
+    countries AS c
+INNER JOIN 
+    populations AS p 
+ON 
+    c.code = p.country_code
+-- Chain another inner join with the economies table, aliased, on code and year
+INNER JOIN 
+    economies AS e 
+ON 
+    c.code = e.code
+Good work! You may have noticed an issue with these results, though. Have a look at the results for Albania. The 2010 value for fertility_rate is also paired with the 2015 value for unemployment_rate, whereas we only want data from one year per record. You'll fix this in the next exercise!
+-- SELECT name, e.year, fertility_rate, unemployment_rate
+-- FROM countries AS c
+-- INNER JOIN populations AS p
+-- ON c.code = p.country_code
+-- INNER JOIN economies AS e
+-- ON c.code = e.code
+-- Add an additional joining condition such that you are also joining on year modifying the code.
+SELECT c.name, e.year, p.fertility_rate, e.unemployment_rate
+FROM countries AS c
+INNER JOIN populations AS p ON c.code = p.country_code
+INNER JOIN economies AS e ON c.code = e.code AND p.year = e.year;
+
+Good work! You can check that this fixed the issue by looking at the results for Albania. There are only two lines of Albania results now: one for 2010 and one for 2015.
+Well done! It will be useful to know the core building blocks of a join like the back of your hand: SELECT, FROM, your JOIN keyword and the ON or USING condition!
+
+correct solution
+-- Select columns from both tables with clear aliases
+SELECT 
+  c1.name AS city,  -- City name from 'cities' table (aliased as c1) renamed as 'city'
+  code,               -- Country code (likely shared by both tables)
+  c2.name AS country,  -- Country name from 'countries' table (aliased as c2) renamed as 'country'
+  region,              -- Region from 'countries' table
+  city_proper_pop     -- City population from 'cities' table
+FROM cities AS c1  -- Select data from 'cities' table and assign alias 'c1'
+
+-- Inner join 'countries' table on matching country code
+INNER JOIN countries AS c2 ON c1.country_code = c2.code
+
+-- Order results by country code (descending)
+ORDER BY code DESC;
+
+SELECT c1.name AS city, code, c2.name AS country, region, city_proper_pop
+FROM cities AS c1
+LEFT JOIN countries AS c2 ON c1.country_code = c2.code
+ORDER BY code DESC;
 
 
+Perfect! Notice that the INNER JOIN resulted in 230 records, whereas the LEFT JOIN returned 236 records. Remember that the LEFT JOIN is a type of outer join: its result is not limited to only those records that have matches for both tables on the joining field.
+incorrect
+SELECT c.name, region, gdp_percapita
+FROM countries AS c
+LEFT JOIN economies AS e ON c.code = e.code  -- Match on code fields
+WHERE e.year = 2010;  -- Filter for the year 2010
 
+
+correct solution
+SELECT name, region, gdp_percapita
+FROM countries AS c
+LEFT JOIN economies AS e ON c.code = e.code  -- Match on code fields
+WHERE year = 2010;  -- Filter for the year 2010
+
+-- Select region, and average gdp_percapita as avg_gdp
+SELECT region, AVG(gdp_percapita) AS avg_gdp
+FROM countries AS c
+LEFT JOIN economies AS e
+USING(code)
+WHERE year = 2010
+-- Group by region
+GROUP BY region;
+
+incorrect solution
+SELECT region, AVG(gdp_percapita) AS avg_gdp
+FROM countries AS c
+LEFT JOIN economies AS e USING(code)
+WHERE e.year = 2010
+GROUP BY region
+ORDER BY avg_gdp DESC
+LIMIT 10;
+
+
+correct solution
+SELECT region, AVG(gdp_percapita) AS avg_gdp
+FROM countries AS c
+LEFT JOIN economies AS e
+USING(code)
+WHERE year = 2010
+GROUP BY region
+-- Order by descending avg_gdp
+ORDER BY avg_gdp DESC
+-- Return only first 10 records
+LIMIT 10;
+
+Nice work! You successfully executed a LEFT JOIN and applied a GROUP BY to the result of your JOIN. Building up your SQL vocabulary in this way will enable you to answer questions of ever-increasing complexity!
 
 
 
