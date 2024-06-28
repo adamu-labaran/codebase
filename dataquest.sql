@@ -2420,3 +2420,25 @@ By mastering SELECT DISTINCT, you can efficiently filter out duplicate records a
 
 10000 chars
 ChatGPT can make mistake
+
+Congratulations on using the WHERE clause along with comparison operators and conditional logic to explore numbers and quantities in the data!
+
+We used comparison operators such as < and > to evaluate the relationship between two quantities.
+We checked for any missing or NULL values in a field.
+We used AND and OR statements to evaluate multiple criteria.
+Later in this course, we'll dig deeper into comparing text and categories.
+
+
+Finish
+
+
+/*
+The Eastern regional manager wants a list of all order IDs and customer names from Buffalo, New York.
+
+Write a query that includes a list of all unique order_id and customer_name values.
+Filter the results to the city of Buffalo in the state of New York
+*/
+SELECT DISTINCT order_id, customer_name
+FROM orders
+INNER JOIN customers ON orders.customer_id = customers.customer_id
+WHERE customers.city = 'Buffalo' AND customers.state = 'New York';
