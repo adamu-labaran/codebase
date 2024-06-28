@@ -854,3 +854,196 @@ You concatenated text.
 Exploring Tables and Columns:Takeaways by Dataquest Labs, Inc. - All rights reserved © 2024SyntaxConceptsResourcesTakeaways by Dataquest Labs, Inc. - All rights reserved © 2024Concatenat
 
 Concatenate two fields:SELECT col1 || ", " || col2 AS "col1, col2"  FROM table;•Find the columns and datatypes for a table:PRAGMA table_info(table_name);•Use scalar functions:SELECT UPPER(col1) AS uppercase,        LOWER(col2) AS lowercase,        ROUND(col3, 2) AS round_to_hundredths  FROM table
+
+-- filtering with numbers
+
+Did last year's sales exceed this year's? Are we under budget? Many business questions can be answered by just comparing two numbers. Let's start with some operators you may remember from school (> and <) to compare whether one value is greater than or less than another.
+
+Filter the data with the WHERE clause
+It's time to introduce the WHERE clause to compare two values in SQL. The clauses we've learned thus far will always be written in queries in this order:
+
+SELECT: Specify what fields we want information from.
+FROM: Specify what tables those fields are coming from.
+WHERE: Specify any criteria that records in those fields should meet.
+LIMIT: Specify how many records to return in results.
+Let's see the power of WHERE in action. For example, we can check to see if there have been any sales over $10,000 in the orders table by writing the following query with WHERE:
+
+SELECT order_id, category, product_name,
+       quantity, sales
+  FROM orders
+ WHERE sales > 10000;
+
+Explain
+
+Copy
+order_id	category	product_name	quantity	sales
+CA-2017-127180	Technology	Canon imageCLASS 2200 Advanced Copier	4	11199.968
+CA-2014-145317	Technology	Cisco TelePresence System EX90 Videoconferencing Unit	6	22638.48
+CA-2017-166709	Technology	Canon imageCLASS 2200 Advanced Copier	3	10499.97
+CA-2016-118689	Technology	Canon imageCLASS 2200 Advanced Copier	5	17499.95
+CA-2017-140151	Technology	Canon imageCLASS 2200 Advanced Copier	4	13999.96
+It looks like there were several orders where multiple copiers were purchased, leading to large sale prices.
+
+The WHERE clause is essentially used as a filter and returns the records where the operators evaluate to TRUE.
+
+/*
+Your supervisor is curious about sales that have lost the company money. They've asked you to look at orders that have lost more than $1,000 in profit.
+
+Write a query that includes order_id, product_name, sales, discount, and profit.
+Filter your results so that your query only shows records that have lost more than $1000.
+*/
+
+SELECT 
+    order_id, 
+    product_name, 
+    sales, 
+    discount, 
+    profit
+FROM 
+    orders
+WHERE 
+    profit < -1000;
+As we learn more and more clauses, it helps to know the order in which SQL executes them. Let's look at the execution order of clauses:
+
+FROM: The first thing SQL does when it runs a query is determine what data it will be looking at. Thus, it executes FROM first.
+
+WHERE: After executing FROM, SQL filters the results using WHERE.
+
+SELECT: Next in the order of execution is SELECT. After determining the table we're getting data from and filtering the records, SQL will choose the selected columns.
+
+LIMIT: Finally, SQL limits the results with LIMIT (if this clause is used in the query).
+
+The reason order of execution is so important to learn about at this stage of our SQL learning journey is because aliasing, which we've seen in the SELECT clause, cannot be referenced in the WHERE clause, since the alias "doesn't exist" yet.
+
+If we want to filter on an aliased field, we need to use the raw calculation in the WHERE clause:
+
+
+The query above filters on profit margin, but the WHERE clause uses profit/sales instead of the alias profit_margin.
+
+Note that SQLite, which is the SQL flavor we are using in this course, is very flexible and actually allows for aliasing in the WHERE clause. However, for SQL best practices this is not recommended.
+
+/*
+Your supervisor is curious about the cheapest items sold from the orders table.
+
+Write a query that includes order_id, subcategory, product_name, and a calculated field aliased price_per_unit.
+Filter your query so you only see records with a price_per_unit less than $0.50.
+*/
+SELECT 
+    order_id, 
+    subcategory, 
+    product_name, 
+    sales / quantity AS price_per_unit
+FROM 
+    orders
+WHERE 
+    sales / quantity < 0.50;
+
+During some analysis, you noticed several large transactions from a customer named Sean Miller. You want to understand more about this customer as part of a project on customer personas.
+
+Pull all fields and records about Sean Miller's order history.
+Look at the results, then answer the multiple choice question below.
+Questions
+1.
+What is notable about this customer's order history?
+
+Correct!
+
+They don't buy any products in the "Technology" category.
+
+
+They have moved addresses more than once. Correct! Sean has lived in North Carolina, Indiana, Florida, and California.
+
+
+Their purchases are for a combination of "Home office" and "Corporate."
+
+
+All of their orders are from 2017.
+
+/*
+During some analysis, you noticed several large transactions from a customer named Sean Miller. You want to understand more about this customer as part of a project on customer personas.
+
+Pull all fields and records about Sean Miller's order history.
+Look at the results, then answer the multiple choice question below.
+*/
+
+SELECT 
+    order_id, 
+    subcategory, 
+    product_name, 
+    sales / quantity AS price_per_unit
+FROM 
+    orders
+WHERE 
+    sales / quantity < 0.50;
+
+/*
+Write a query that returns the order_id, product_id, and a field that shows a 10% sales tax on sales, aliased as sales_tax.
+Get the records where the resulting sales tax is between 1 and 2 dollars.
+solution
+*/
+SELECT order_id, product_id, sales * 0.1 AS sales_tax
+FROM orders
+WHERE sales * 0.1 BETWEEN 1 AND 2;
+/*
+Your manager has noticed some missing values in the segment field and isn't sure if it's due to poor data quality or customer error.
+
+Write a query that identifies all missing values from the segment field.
+Include all fields.
+After you run your query, write an inline comment with any trends in the missing data.
+solution
+*/
+SELECT *
+FROM orders
+WHERE segment IS NULL;
+
+/* Trends:
+- The missing values in the segment field might be concentrated in specific regions or time periods.
+- Certain products or categories might have higher instances of missing segment data.
+- The same customers might repeatedly have missing segment values.
+*/
+
+/*
+Your manager would like to study the most expensive items from the 'Storage' subcategory.
+
+Write a query to select at least product_name and a calculated field aliased as price_per_unit that divides sales by quantity.
+Only select records in 'Storage' where the price per unit is more than $300.
+solution
+*/
+SELECT 
+    product_name, 
+    sales / quantity AS price_per_unit
+FROM 
+    orders
+WHERE 
+    subcategory = 'Storage'
+    AND sales / quantity > 300;
+
+/*
+Your manager wants to identify products that perform poorly because they either:
+
+Generating a negative profit, or
+Selling only in individual quantities
+They have tasked you with identifying these products.
+
+Write a query that includes at least product_name, profit, and quantity.
+Apply a filter to select products with profits less than $0 or quantities equal to 1.
+solution
+*/
+
+SELECT 
+    product_name, 
+    profit, 
+    quantity
+FROM 
+    orders
+WHERE 
+    profit < 0 
+    OR quantity = 1;
+
+
+Congratulations on using the WHERE clause along with comparison operators and conditional logic to explore numbers and quantities in the data!
+
+We used comparison operators such as < and > to evaluate the relationship between two quantities.
+We checked for any missing or NULL values in a field.
+We used AND and OR statements to evaluate multiple criteria.
+Later in this course, we'll dig deeper into comparing text and categories
