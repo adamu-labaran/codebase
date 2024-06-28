@@ -387,3 +387,470 @@ You used comments to produce legible, comprehensible queries.
 Exploring the Database and Schema :Takeaways by Dataquest Labs, Inc. - All rights reserved © 2024SyntaxConceptsResourcesTakeaways by Dataquest Labs, Inc. - All rights reserved © 2024Select the first 10 rows of a table:SELECT *FROM tableLIMIT 10;•Select certain columns from a table:SELECT column1, column2FROM table;•Alias a field:SELECT col1 AS first_column  FROM table;•Adding comments:-- This is a single line comment./* This is a multi-line 
 
 SQL, or structured query language, is a programming language used to communicate withrelational databases. •Relational databases are called such because the relationships between shared columns acrosstables matter. •There are many dialects of SQL and relational database systems. In this course, we're using aSQLite database and following ANSI (American National Standards Insitute) standard code. 
+
+-- exploring tables and columns
+For consistency and efficiency, SQL databases only allow one type of data per column. This means that integer columns only have integers, text columns only have text, and so on.
+
+Formally, we call these types of data storage classes. Even though datatypes and storage classes are different, it's common to refer to both of them as datatypes, which is what we'll do from now on.
+
+SQLite uses the following terminology:
+
+Integer for integer numbers, like the values in the quantity field.
+Real for floating point values (or floats). Think of these as decimal numbers, like the values in the sales field.
+Text or strings for regular text values, like the values in the order_date, order_id, and product_name fields.
+Note that there isn't a storage class for date values. The database stores these as text!
+
+Instructions
+The orders table has the following numeric fields: sales, quantity, discount, and profit. Here's a sample of the output from each field:
+
+sales	quantity	discount	profit
+261.96	2	0.0	41.9136
+731.94	3	0.0	219.582
+14.62	2	0.0	6.8714
+957.5775	5	0.45	-383.031
+22.368	2	0.2	2.5164
+Write a query that includes all of the REAL number fields from the orders.
+Interestingly, postal_code is not included in the list of numeric columns because it is a TEXT field.
+
+United States postal codes can begin with 0 (i.e., 06057 is a postal code in Connecticut). If these values were stored as numbers, the zero would get dropped, leading to inaccurate data.
+solution
+SELECT   sales, profit, discount 
+FROM orders;
+
+
+Learn
+On the previous screen, we had to make a judgment call about the datatype of the postal_code field, but this approach can be inefficient and inaccurate. For example, what if a TEXT field is incorrectly assigned as INTEGER?
+
+Fortunately, SQLite provides a way to retrieve information about the columns in a table:
+
+PRAGMA table_info(returns);
+
+Explain
+
+Copy
+Unlike a SELECT statement, which retrieves data from a table, PRAGMA table_info() retrieves metadata, which is information about a table.
+
+
+When we run this command, it returns one row for each of the table's columns with information, such as its name and data type.
+
+Let's look at the table information for the returns table:
+
+cid	name	type	notnull	dflt_value	pk
+0	returned	TEXT	0	NULL	0
+1	order_date	TEXT	0	NULL	0
+2	order_id	TEXT	0	NULL	0
+3	customer_id	TEXT	0	NULL	0
+5	customer_name	TEXT	0	NULL	0
+Notice there are several columns with unfamiliar names, like notnull and dflt_value. Don't worry about these too much as they go beyond the scope of this course. You can learn more about this command here.
+
+Instructions
+Your supervisor wants you to preview the data types for the orders table to verify that they are correctly assigned.
+
+Write a query that displays the data types of the orders table.
+The SQL code PRAGMA table_info(returns); is used to retrieve information about the structure of the "returns" table in the SQLite3 database.
+
+The PRAGMA command is a special command in SQLite3 that is used to query the database engine for information about its internal state and configuration. In this case, we're using PRAGMA table_info to get information about the columns in the "returns" table.
+
+The table_info function takes one argument, which is the name of the table we want to get information about. In this case, we're passing it the string "returns" to get information about the "returns" table.
+
+The output of this command will be a table with the following columns:
+
+cid: The column index (integer)
+name: The column name (text)
+type: The column type (text)
+notnull: A boolean indicating whether the column allows NULL values (integer, 0=no, 1=yes)
+dflt_value: The default value for the column (text or NULL)
+pk: A boolean indicating whether the column is part of the primary key (integer, 0=no, 1=yes)
+Here's an example of what the output might look like:
+
+cid name        type        notnull dflt_value  pk
+--- ------------ ----------- ------- ----------- ---
+0   id           INTEGER     0                    1
+1   product_name TEXT       1                    0
+2   return_date  DATE       1                    0
+3   quantity     INTEGER     1                    0
+4   reason       TEXT       1                    0
+In this example, we can see that the "returns" table has five columns: "id", "product_name", "return_date", "quantity", and "reason". We can also see that the "id" column is the primary key (indicated by pk=1), and that the "product_name", "return_date", "quantity", and "reason" columns do not allow NULL values (indicated by notnull=1).
+
+
+On the previous screen, we had to make a judgment call about the datatype of the postal_code field, but this approach can be inefficient and inaccurate. For example, what if a TEXT field is incorrectly assigned as INTEGER?
+
+Fortunately, SQLite provides a way to retrieve information about the columns in a table:
+
+PRAGMA table_info(returns);
+
+Explain
+
+Copy
+Unlike a SELECT statement, which retrieves data from a table, PRAGMA table_info() retrieves metadata, which is information about a table.
+
+
+When we run this command, it returns one row for each of the table's columns with information, such as its name and data type.
+
+Let's look at the table information for the returns table:
+
+cid	name	type	notnull	dflt_value	pk
+0	returned	TEXT	0	NULL	0
+1	order_date	TEXT	0	NULL	0
+2	order_id	TEXT	0	NULL	0
+3	customer_id	TEXT	0	NULL	0
+5	customer_name	TEXT	0	NULL	0
+Notice there are several columns with unfamiliar names, like notnull and dflt_value. Don't worry about these too much as they go beyond the scope of this course. You can learn more about this command here.
+
+Instructions
+Your supervisor wants you to preview the data types for the orders table to verify that they are correctly assigned.
+
+Write a query that displays the data types of the orders table.
+solution
+PRAGMA table_info(orders)
+
+A typical task for data analysts is to derive new columns from existing columns by using arithmetic operations. For example, what if we want to find out how much sales tax there is on each sale in the orders table?
+
+We can write a query to pull the order_id, sales amount and multiply sales by 7% to estimate sales tax:
+
+SELECT order_id, 
+       sales, 
+       sales * .07
+  FROM orders;
+
+Explain
+
+Copy
+order_id	sales	sales * .07
+CA-2016-152156	261.96	18.3372
+CA-2016-152156	731.94	51.2358
+CA-2016-138688	14.62	1.0234
+US-2015-108966	957.5775	67.030425
+US-2015-108966	22.368	1.56576
+Notice that the query uses .07 instead of 7%. This is because we can't calculate with percentages directly and must convert them to a decimal number first.
+
+Looking at our column names, we can see that the calculated field is currently called sales * .07, which isn't very readable. Let's rewrite our query with an alias:
+
+SELECT order_id, 
+       sales, 
+       sales * .07 AS sales_tax
+  FROM orders;
+
+Explain
+
+Copy
+order_id	sales	sales_tax
+CA-2016-152156	261.96	18.3372
+CA-2016-152156	731.94	51.2358
+CA-2016-138688	14.62	1.0234
+US-2015-108966	957.5775	67.030425
+US-2015-108966	22.368	1.56576
+Much better! We'll learn how to clean up this query even more using the ROUND() function on the next screen.
+Instructions
+/*
+Your manager has requested you find the profit margin on all orders from the orders table.
+
+Write a query that includes order_id, sales, profit, and profit margin (profit divided by sales).
+Alias the calculated field as profit_margin.
+solutiion
+Only display 8 rows.
+*/
+
+SELECT order_id, sales, profit,profit/sales AS 'profit_margin'
+FROM orders
+LIMIT 8;
+
+We'll now learn about an important quirk of performing division in SQL. On the previous screen, we learned how to do arithmetic in SQL. Let's see an example of division:
+
+SELECT 4/2 AS four_div_two;
+
+Explain
+
+Copy
+four_div_two
+2
+This is the expected result. However . . .
+
+SELECT 3/2 AS three_div_two;
+
+Explain
+
+Copy
+three_div_two
+1
+We didn't get 1.5 as we expected; rather, we got 1. What is going on here?
+
+In many programming languages, using the symbol / will perform integer division. Integer division discards the fractional part.
+
+
+So how do we go about performing regular division in SQL? We can handle this by having any of the parts be a float. To change the datatype of a column/value we can use the CAST function, like so: CAST(column/value AS new_datatype).
+
+In SQLite, some of the values that replace the parameter new_datatype are TEXT, REAL, INTEGER. These are all reserved words. Other databases can and will have different parameters, according to their datatypes.
+
+
+Here's an example:
+
+
+three_div_two
+1.5
+Instructions
+You have been asked to write a query using the orders table that helps identify whether customers are more likely to purchase an even number of an item or an odd number to help with ordering inventory. You can do this by dividing the quantity by 2 to help separate results that are whole numbers vs. decimal numbers.
+
+Write a query that includes:
+product_id
+quantity
+a calculated field that divides quantity by 2 (remember to CAST your integer to a real number)
+Alias the calculated field as even_or_odd
+Limit your results to 5 rows
+In upcoming lessons, you'll learn how to categorize the results of queries like this one to display more user-friendly labels such as "Even" or "Odd" instead of raw numbers. This is just a small taste of the powerful capabilities SQL has to offer!
+/*
+You have been asked to write a query using the orders table that helps identify whether customers are more likely to purchase an even number of an item or an odd number to help with ordering inventory. You can do this by dividing the quantity by 2 to help separate results that are whole numbers vs. decimal numbers.
+
+Write a query that includes:
+product_id
+quantity
+a calculated field that divides quantity by 2 (remember to CAST your integer to a real number)
+Alias the calculated field as even_or_odd
+Limit your results to 5 rows
+*/
+
+SELECT product_id, quantity, CAST(quantity AS REAL)/2 AS even_or_odd
+FROM orders
+LIMIT 5;
+In addition to arithmetic operators, SQL makes available a number of functions to use on fields.
+
+On the previous screen we saw that the values for sales and our calculated field, sales_tax, had too many digits after the decimal point to represent dollars. Here's a reminder of what that query and output looked like:
+
+SELECT order_id, 
+       sales, 
+       sales * .07 AS sales_tax
+  FROM orders;
+
+Explain
+
+Copy
+order_id	sales	sales_tax
+CA-2016-152156	261.96	18.3372
+CA-2016-152156	731.94	51.2358
+CA-2016-138688	14.62	1.0234
+US-2015-108966	957.5775	67.030425
+US-2015-108966	22.368	1.56576
+Let's clean up our query using ROUND(), which rounds numerical values to a specified number of decimal places. This function can be helpful when we want to display or store values with a certain level of precision or when we need to perform calculations with rounded values.
+
+So how do we use it? Well, this function requires us to enter two arguments, so let's take a look at the syntax:
+
+ROUND(value, decimal_places)
+
+Explain
+
+Copy
+value: the number we want to round
+decimal_places: the number of decimal places to round the value to (Note: if this argument is omitted, the function will round to the nearest whole number.)
+Now that we know about the ROUND() function, let's see it in action. We'll use separate ROUND() functions on sales and our calculated field, sales_tax, and give each an alias to make the names more readable:
+
+SELECT order_id, 
+       ROUND(sales, 2) AS rounded_sales, 
+       ROUND(sales * .07, 2) AS rounded_sales_tax
+  FROM orders;
+
+Explain
+
+Copy
+order_id	rounded_sales	rounded_sales_tax
+CA-2016-152156	261.96	18.34
+CA-2016-152156	731.94	51.24
+CA-2016-138688	14.62	1.02
+US-2015-108966	957.58	67.03
+US-2015-108966	22.37	1.57
+
+/*
+Many customers buy multiples of the same item, which makes it difficult to see how much each item costs.
+
+Write a query from the orders table that includes order_id, sales, and quantity.
+Create a field price_per_unit that divides sales by quantity.
+Round price_per_unit to two decimal places.
+Only display 10 rows.
+solution
+*/
+-- SELECT order_id, sales, quantity, ROUND(sales/quantity, 2) AS price_per_unit
+-- FROM orders
+-- LIMIT 10;
+
+SELECT 
+    order_id, 
+    sales, 
+    quantity, 
+    ROUND(sales / quantity, 2) AS price_per_unit
+FROM 
+    orders
+LIMIT 10;
+
+SQL also provides several functions that help transform text data. On this screen we'll take a look at:
+
+UPPER(), which converts all characters in a given text string to uppercase
+LOWER(), which converts all characters in a given text string to lowercase
+These functions have many uses, but two of the most common uses are:
+
+Data normalization: When importing data from various sources, we may encounter inconsistent letter casing. We can use UPPER() or LOWER() to normalize the text data, making it uniform and easier to analyze.
+Display formatting: We can use UPPER() or LOWER() to format the output of our query for improved readability or to meet specific display requirements.
+For example, perhaps we wanted to convert the ship_mode column to all uppercase for formatting purposes. This is possible with the UPPER() function:
+
+SELECT ship_mode AS original_ship_mode,
+       UPPER(ship_mode) AS SHIP_MODE
+  FROM orders;
+
+Explain
+
+Copy
+original_ship_mode	SHIP_MODE
+Second Class	SECOND CLASS
+Second Class	SECOND CLASS
+Second Class	SECOND CLASS
+Standard Class	STANDARD CLASS
+Standard Class	STANDARD CLASS
+Like anything else done as part of a SELECT statement, running these functions does NOT impact the original data in the orders table.
+
+Instructions
+Customers enter their own names when they purchase items from the superstore online, which means some customer names have inconsistent capitalization formatting.
+
+Write a query that converts customer_name from the orders table to all lowercase letters.
+Alias the newly formatted names as customer_name_lower.
+
+
+SQL also provides several functions that help transform text data. On this screen we'll take a look at:
+
+UPPER(), which converts all characters in a given text string to uppercase
+LOWER(), which converts all characters in a given text string to lowercase
+These functions have many uses, but two of the most common uses are:
+
+Data normalization: When importing data from various sources, we may encounter inconsistent letter casing. We can use UPPER() or LOWER() to normalize the text data, making it uniform and easier to analyze.
+Display formatting: We can use UPPER() or LOWER() to format the output of our query for improved readability or to meet specific display requirements.
+For example, perhaps we wanted to convert the ship_mode column to all uppercase for formatting purposes. This is possible with the UPPER() function:
+
+SELECT ship_mode AS original_ship_mode,
+       UPPER(ship_mode) AS SHIP_MODE
+  FROM orders;
+
+Explain
+
+Copy
+original_ship_mode	SHIP_MODE
+Second Class	SECOND CLASS
+Second Class	SECOND CLASS
+Second Class	SECOND CLASS
+Standard Class	STANDARD CLASS
+Standard Class	STANDARD CLASS
+Like anything else done as part of a SELECT statement, running these functions does NOT impact the original data in the orders table.
+
+/*
+Customers enter their own names when they purchase items from the superstore online, which means some customer names have inconsistent capitalization formatting.
+
+Write a query that converts customer_name from the orders table to all lowercase letters.
+Alias the newly formatted names as customer_name_lower
+*/
+SELECT LOWER(customer_name) AS customer_name_lower
+FROM orders;
+
+We've seen that it's possible to change the output of text fields with UPPER() and LOWER(). It's also possible to concatenate, or combine, multiple pieces of text together.
+
+Perhaps we'd like to put the city and state columns together like this: Henderson, Kentucky.
+
+SQLite uses the concatenate operator (||) to join two strings into one.
+
+SELECT city || ", " || state AS "location"
+  FROM orders;
+
+Explain
+
+Copy
+location
+Henderson, Kentucky
+Henderson, Kentucky
+Los Angeles, California
+Fort Lauderdale, Florida
+Fort Lauderdale, Florida
+
+/*
+Every superstore location is named after the city where it's located. For example, the store in Los Angeles, California is called "Superstore Los Angeles."
+
+Write a query that includes order_id, region, and state.
+Create a new column called local_store that concatenates the word "Superstore" with city. There should be one space between the word "Superstore" and the city name (i.e. "Superstore Dallas")
+Limit your results to 10 rows.
+solution
+*/
+
+SELECT 
+    order_id, 
+    region, 
+    state, 
+    'Superstore ' || city AS local_store
+FROM 
+    orders
+LIMIT 10;
+
+Sometimes we'll want to add a column to our query that shows a constant number for every record. We can do this by specifying the number in the SELECT clause and adding an alias for readability (note that the alias isn't required):
+
+SELECT sales, 2 AS promotional_discount
+  FROM orders;
+
+Explain
+
+Copy
+sales	promotional_discount
+261.96	2
+731.94	2
+14.62	2
+957.5775	2
+22.368	2
+We can see that including 2 AS promotional_discount creates a new column with 2's filled in for every value.
+
+/*
+You've been asked to create a table that shows the salary for all the regional managers.
+
+Write a query from managers that includes all fields.
+Create a new column with the manager salary amount: $51,000. Alias it as salary
+*/
+
+SELECT 
+    *,
+    51000 AS salary
+FROM 
+    managers;
+
+
+Let's practice our newfound understanding of operations and functions with a challenge!
+
+We've been asked to write a query that lists the address and total sales amount for each order. The total sales amount includes sales and two other amounts: tax and shipping cost, which are not currently included in the orders table.
+
+We now know everything we need in order to write this query. It's by-far the most challenging
+ query we've written, so don't be discouraged if it takes a few extra attempts to get it right. You've got this!
+
+Create a field called address that combines city, state, and postal_code in the following format:
+city, state 99999
+Calculate a total_cost field cost as sales, shipping, and tax. (Shipping costs 4.99 and tax is calculated at 7%). Round the field to two decimal places.
+Create a field called tax that finds 7% of sales, rounded to two decimal places.
+Create a field called shipping_cost with a value of 4.99.
+For readability, your final query should include the following fields:
+address
+sales
+tax
+shipping_cost
+total_cost
+Limit your results to 10 rows.
+
+solution
+SELECT 
+    city || ', ' || state || ' ' || postal_code AS address,
+    sales,
+    ROUND(sales * 0.07, 2) AS tax,
+    4.99 AS shipping_cost,
+    ROUND(sales + (sales * 0.07) + 4.99, 2) AS total_cost
+FROM 
+    orders
+LIMIT 10;
+
+
+Congratulations on exploring tables and columns of a database using SQL and the SELECT clause! You were able to retrieve and manipulate various columns of the orders table:
+
+You explored the data types of a table.
+You performed both arithmetic and text functions on given columns.
+You concatenated text.
+
+Exploring Tables and Columns:Takeaways by Dataquest Labs, Inc. - All rights reserved © 2024SyntaxConceptsResourcesTakeaways by Dataquest Labs, Inc. - All rights reserved © 2024Concatenat
+
+Concatenate two fields:SELECT col1 || ", " || col2 AS "col1, col2"  FROM table;•Find the columns and datatypes for a table:PRAGMA table_info(table_name);•Use scalar functions:SELECT UPPER(col1) AS uppercase,        LOWER(col2) AS lowercase,        ROUND(col3, 2) AS round_to_hundredths  FROM table
