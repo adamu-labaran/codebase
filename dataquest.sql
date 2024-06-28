@@ -177,3 +177,66 @@ Write a query to ask the Superstore database to show the city, state, and region
 Your supervisor only needs to see a sample of the data, so limit your results to 10 records.
 Notice that we cannot pull the manager's name in this query because this field is not in the orders table. We'll learn how to add it in a future course!
 */
+
+SELECT *
+  FROM orders
+ LIMIT 5;
+ 
+ Most databases we'll work with are like superstore in that they consist of multiple tables of data.
+
+Like a table in a spreadsheet, a database table consists of rows and columns which are often called records and fields.
+
+
+We've seen how to reduce the number of records shown by using the LIMIT clause:
+
+SELECT *
+  FROM orders
+ LIMIT 5;
+
+Explain
+
+Copy
+But what about reducing the number of fields shown? As we learned earlier, we can retrieve the data from all fields in a table with help of the * wildcard. If we want to select specific fields to be returned by the query, we can list them in the SELECT clause, separated by commas:
+
+SELECT order_id, order_date, category, subcategory 
+  FROM orders;
+
+Explain
+
+Copy
+When we specify the columns we want returned, the query will execute more quickly and be easier to interpret.
+
+Instructions
+You've been asked to provide a sample of sales details to your supervisor. They don't want to see lots of extra information.
+
+Write a query from the orders table that only selects relevant fields:
+order_date
+order_id
+product_name
+sales
+quantity
+Limit the number of records to 5.
+soltion
+SELECT order_date, order_id, product_name, sales, quantity 
+FROM
+orders
+LIMIT 5;
+
+As mentioned on the last screen, databases have multiple tables. For example, the superstore database has 3 tables:
+
+orders
+returns
+managers
+Each table in a database is connected to other tables through fields that relate to one another. This type of database is called a relational database, and we can visualize the relationship between tables with a schema diagram. Let's take a look at the diagram for our database:
+
+
+A database can store large amounts of data more securely and efficiently than a spreadsheet or a text file. However, unlike simply opening a spreadsheet, we actually have to "ask" for data from the database. This is what we do when we write queries in SQL.
+
+We’ll learn how to join multiple database tables together in a future course. For now, each query will just look at one table.
+
+Instructions
+Your supervisor has asked you to create a list of locations and regions from the orders table so managers can verify which cities and states they are assigned to.
+
+Write a query to ask the Superstore database to show the city, state, and region fields from the orders table.
+Your supervisor only needs to see a sample of the data, so limit your results to 10 records.
+Notice that we cannot pull the manager's name in this query because this field is not in the orders table. We'll learn how to add it in a future course!
