@@ -240,3 +240,150 @@ Your supervisor has asked you to create a list of locations and regions from the
 Write a query to ask the Superstore database to show the city, state, and region fields from the orders table.
 Your supervisor only needs to see a sample of the data, so limit your results to 10 records.
 Notice that we cannot pull the manager's name in this query because this field is not in the orders table. We'll learn how to add it in a future course!
+solution
+SELECT city, state, region
+FROM orders
+LIMIT 10;
+
+Sometimes the notations used to name fields in a table are easy to type, but may look awkward to present.
+
+For example, what if we'd like to rename the following table so the headers have more human-readable names like "Order ID", "Order Date" and "Ship Date?"
+
+order_id	order_date	ship_date
+CA-2016-152156	2016-11-08	2016-11-11
+CA-2016-152156	2016-11-08	2016-11-11
+CA-2016-138688	2016-06-12	2016-06-16
+It's possible to do that right from the SELECT clause with help of the AS keyword. AS will let you temporarily rename or alias these fields:
+
+SELECT order_id AS 'Order ID',
+       order_date AS 'Order Date',
+       ship_date AS 'Ship Date'
+  FROM orders;
+
+Explain
+
+Copy
+Order ID	Order Date	Ship Date
+CA-2016-152156	2016-11-08	2016-11-11
+CA-2016-152156	2016-11-08	2016-11-11
+CA-2016-138688	2016-06-12	2016-06-16
+Aliasing fields does not permanently change their name in the database. Aliases only exist for as long as the query does.
+Interestingly, the AS keyword is technically optional, and we can simply write the alias directly after the column or table name like this:
+
+SELECT order_id 'Order ID',
+       order_date 'Order Date',
+       ship_date 'Ship Date'
+  FROM orders;
+
+Explain
+
+Copy
+Both approaches are valid and produce the same result, but using AS is preferred for a few reasons:
+
+Readability:
+Including AS in the query explicitly indicates that an alias is being used, making it easier for others (or yourself) to understand the query when reading it later.
+Consistency:
+Different databases may have varying support for aliasing without the AS keyword. To ensure queries are compatible across database systems, it's a good idea to use AS.
+Avoiding Errors:
+Using AS can prevent potential errors caused by ambiguity, especially when column names are similar to keywords in SQL.
+Now let's practice aliasing from the superstore database!
+
+Instructions
+Write a query to return the city, state and postal_code fields from orders.
+Alias the results as City, State and ZIP Code, respectively. Make sure to capitalize aliases as specified.
+Limit results to 10 records.
+Tip
+If you don't get the correct answer, try clicking the Explain button to analyze your code:
+SELECT order_id AS 'Order ID',
+       order_date AS 'Order Date',
+       ship_date AS 'Ship Date'
+  FROM orders;
+  
+ 
+ Alternatively of alising instead of AS it can be written directly 
+ SELECT order_id 'Order ID',
+       order_date 'Order Date',
+       ship_date 'Ship Date'
+  FROM orders;
+solution
+/*
+Write a query to return the city, state and postal_code fields from orders.
+Alias the results as City, State and ZIP Code, respectively. Make sure to capitalize aliases as specified.
+Limit results to 10 records.
+solution:
+*/
+SELECT city AS 'City', 
+       state AS 'State', 
+       postal_code AS 'ZIP Code'
+FROM orders
+LIMIT 10;
+
+Like with most programming languages, it's often a good idea to include comments explaining the reasoning behind our code.
+
+Unlike the typical SQL code we'll be writing in this course, comments are not executed by the computer. Single-line comments in SQL are started with two dashes, like so:
+
+-- This is a single line comment.
+-- Each single line comment must start with two dashes.
+SELECT *
+  FROM orders
+ LIMIT 5;
+
+Explain
+
+Copy
+Single line comments can also appear on the same line as code, which can be useful for clarifying what a specific line of code does:
+
+SELECT *
+  FROM orders --This query uses the orders table
+ LIMIT 5;
+
+Explain
+
+Copy
+We can also write multi-line comments by using the /* and */ characters at the start and end of a comment. This is often useful when we want to "comment out" a whole query:
+
+/* 
+This is a multi-line comment.
+The query below will not run because it is inside of this comment:
+​
+SELECT order_id, product_name
+  FROM orders
+ LIMIT 10;
+*/
+
+Explain
+
+Copy
+Instructions
+In your job as a data analyst, you are testing two different queries to see which one shows customer address information in the correct order for mailing labels. The correct order is:
+
+city, state, postal code, country
+
+You don't want to delete either query in the code editor. Instead, your job is to add comments to make sure only one query runs.
+
+Use a multi-line comment to comment out the query that isn't in the correct column order.
+Write a single-line comment above the query that is in the correct column order to add clarity to your code. Your comment should say something like, "This query shows city, state, postal code, and country information."
+Tip
+Click the "Help" dropdown to see a hint, peek at the suggested answer, or go to the Dataquest community to talk to other learners about the exercise.
+solution
+-- This query shows city, state, postal code, and country information.
+SELECT city, state, postal_code, country
+  FROM orders
+ LIMIT 4;
+ 
+ /*
+ 
+ SELECT country, state, postal_code, city
+   FROM orders
+  LIMIT 4;
+ */
+ 
+ Congratulations on exploring a relational database with the help of SQL! You have already achieved the following:
+
+You read in a set number of records and fields from a given table.
+You learned about different SQL dialects.
+You selected columns via aliasing.
+You used comments to produce legible, comprehensible queries.
+Exploring the Database and Schema :Takeaways by Dataquest Labs, Inc. - All rights reserved © 2024SyntaxConceptsResourcesTakeaways by Dataquest Labs, Inc. - All rights reserved © 2024Select the first 10 rows of a table:SELECT *FROM tableLIMIT 10;•Select certain columns from a table:SELECT column1, column2FROM table;•Alias a field:SELECT col1 AS first_column  FROM table;•Adding comments:-- This is a single line comment./* This is a multi-line 
+
+SQL, or structured query language, is a programming language used to communicate withrelational databases. •Relational databases are called such because the relationships between shared columns acrosstables matter. •There are many dialects of SQL and relational database systems. In this course, we're using aSQLite database and following ANSI (American National Standards Insitute) standard code. 
