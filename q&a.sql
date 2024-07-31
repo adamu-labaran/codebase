@@ -610,5 +610,53 @@ Songs to Listens: Each song can have many listens.
 Releases to Listens: Each release date can be associated with many listens through the songs table.
 So, the one-to-one relationship exists between the Songs table and the Releases table.
 
+which of the following statement is false
+a. left join always return the same result as right join
+b. left join are more common than right join
+c. right join can always be re-written as left
 
+ChatGPT
+The false statement is:
+
+a. left join always return the same result as right join
+
+A left join and a right join will not always return the same result, as they prioritize different tables in terms of returning all records. A left join returns all records from the left table and matched records from the right table, while a right join returns all records from the right table and matched records from the left table.
+
+what is the role of union, union all, intersect
+ChatGPT
+The roles of UNION, UNION ALL, and INTERSECT in SQL are to combine the results of two or more queries. Here's a breakdown of each:
+
+UNION
+Role: Combines the result sets of two or more SELECT statements into a single result set.
+Characteristics:
+Eliminates duplicate records (only unique records are returned).
+All SELECT statements within the UNION must have the same number of columns in the result sets with similar data types.
+Example:
+sql
+Copy code
+SELECT column1, column2 FROM table1
+UNION
+SELECT column1, column2 FROM table2;
+UNION ALL
+Role: Combines the result sets of two or more SELECT statements into a single result set.
+Characteristics:
+Includes all records from all SELECT statements, including duplicates.
+Similar to UNION, all SELECT statements must have the same number of columns with similar data types.
+Example:
+sql
+Copy code
+SELECT column1, column2 FROM table1
+UNION ALL
+SELECT column1, column2 FROM table2;
+INTERSECT
+Role: Returns the common records from two or more SELECT statements.
+Characteristics:
+Only returns the records that are present in all SELECT statements.
+Like UNION, all SELECT statements must have the same number of columns with similar data types.
+Example:
+sql
+Copy code
+SELECT column1, column2 FROM table1
+INTERSECT
+SELECT column1, column2 FROM table2;
 */
