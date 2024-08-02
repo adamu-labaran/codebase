@@ -6,6 +6,12 @@
 -- On the other hand, the "IS NOT NULL" operator is used to check if a specific column in a database table has non-null values, indicating that there is data present. It returns true if the column contains non-null values and false otherwise. This can be beneficial when you want to exclude rows that lack data for a particular field.
 -- By using these operators, you can effectively query and retrieve data based on whether certain columns have null or non-null values, allowing for more targeted analysis or manipulation of records within your database.
 
+-- The type of relationship between students and classes is typically:
+
+-- c. many-many relationship
+
+-- This is because a single student can enroll in multiple classes, and a single class can have multiple students enrolled in it.
+
 /*
 hello
 ChatGPT
