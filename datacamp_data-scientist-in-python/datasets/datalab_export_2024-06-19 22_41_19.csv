@@ -1,0 +1,101 @@
+"yearID","franchID","name","G","SO"
+1871,"BNA","Boston Red Stockings",31,19
+1871,"CNA","Chicago White Stockings",28,22
+1871,"CFC","Cleveland Forest Citys",29,25
+1871,"KEK","Fort Wayne Kekiongas",19,9
+1871,"NNA","New York Mutuals",33,15
+1871,"PNA","Philadelphia Athletics",28,23
+1871,"ROK","Rockford Forest Citys",25,30
+1871,"TRO","Troy Haymakers",29,19
+1871,"OLY","Washington Olympics",32,13
+1872,"BLC","Baltimore Canaries",58,28
+1872,"ECK","Brooklyn Eckfords",29,40
+1872,"BRA","Brooklyn Atlantics",37,25
+1872,"BNA","Boston Red Stockings",48,26
+1872,"CFC","Cleveland Forest Citys",22,13
+1872,"MAN","Middletown Mansfields",24,13
+1872,"NNA","New York Mutuals",56,52
+1872,"PNA","Philadelphia Athletics",47,47
+1872,"TRO","Troy Haymakers",25,14
+1872,"OLY","Washington Olympics",9,4
+1872,"NAT","Washington Nationals",11,3
+1873,"BLC","Baltimore Canaries",57,30
+1873,"MAR","Baltimore Marylands",6,3
+1873,"BRA","Brooklyn Atlantics",55,47
+1873,"BNA","Boston Red Stockings",60,36
+1873,"RES","Elizabeth Resolutes",23,30
+1873,"NNA","New York Mutuals",53,22
+1873,"PNA","Philadelphia Athletics",52,33
+1873,"PWS","Philadelphia Whites",53,41
+1873,"WBL","Washington Blue Legs",39,36
+1874,"BLC","Baltimore Canaries",47,37
+1874,"BRA","Brooklyn Atlantics",56,51
+1874,"BNA","Boston Red Stockings",71,28
+1874,"CNA","Chicago White Stockings",59,54
+1874,"HNA","Hartford Dark Blues",53,63
+1874,"NNA","New York Mutuals",65,40
+1874,"PNA","Philadelphia Athletics",55,51
+1874,"PWS","Philadelphia Whites",58,33
+1875,"BRA","Brooklyn Atlantics",44,36
+1875,"BNA","Boston Red Stockings",82,52
+1875,"CNA","Chicago White Stockings",69,65
+1875,"HNA","Hartford Dark Blues",86,64
+1875,"WES","Keokuk Westerns",13,22
+1875,"NHV","New Haven Elm Citys",47,62
+1875,"NNA","New York Mutuals",71,47
+1875,"PNA","Philadelphia Athletics",77,55
+1875,"PWS","Philadelphia Whites",70,58
+1875,"CEN","Philadelphia Centennials",14,25
+1875,"SLR","St. Louis Red Stockings",19,45
+1875,"SNA","St. Louis Brown Stockings",70,102
+1875,"WNT","Washington Nationals",28,42
+1876,"ATL","Boston Red Caps",70,98
+1876,"CHC","Chicago White Stockings",66,45
+1876,"CNR","Cincinnati Reds",65,136
+1876,"HAR","Hartford Dark Blues",69,78
+1876,"LGR","Louisville Grays",69,98
+1876,"NYU","New York Mutuals",57,35
+1876,"ATH","Philadelphia Athletics",60,36
+1876,"SBS","St. Louis Brown Stockings",64,63
+1877,"ATL","Boston Red Caps",61,121
+1877,"CHC","Chicago White Stockings",60,111
+1877,"CNR","Cincinnati Reds",58,110
+1877,"HAR","Hartford Dark Blues",60,97
+1877,"LGR","Louisville Grays",61,140
+1877,"SBS","St. Louis Brown Stockings",60,147
+1878,"ATL","Boston Red Caps",60,154
+1878,"CHC","Chicago White Stockings",61,157
+1878,"CNR","Cincinnati Reds",61,141
+1878,"IBL","Indianapolis Blues",63,197
+1878,"MLG","Milwaukee Grays",61,214
+1878,"PRO","Providence Grays",62,218
+1879,"BUF","Buffalo Bisons",79,314
+1879,"ATL","Boston Red Caps",84,222
+1879,"CHC","Chicago White Stockings",83,294
+1879,"CBL","Cleveland Blues",82,214
+1879,"CNR","Cincinnati Reds",81,207
+1879,"PRO","Providence Grays",85,172
+1879,"SYR","Syracuse Stars",71,238
+1879,"TRT","Troy Trojans",77,182
+1880,"BUF","Buffalo Bisons",85,327
+1880,"ATL","Boston Red Caps",86,221
+1880,"CHC","Chicago White Stockings",86,217
+1880,"CBL","Cleveland Blues",85,237
+1880,"CNR","Cincinnati Reds",83,267
+1880,"PRO","Providence Grays",87,186
+1880,"TRT","Troy Trojans",83,260
+1880,"WOR","Worcester Ruby Legs",85,278
+1881,"BUF","Buffalo Bisons",83,270
+1881,"ATL","Boston Red Caps",83,193
+1881,"CHC","Chicago White Stockings",84,224
+1881,"CBL","Cleveland Blues",85,224
+1881,"DTN","Detroit Wolverines",84,250
+1881,"PRO","Providence Grays",85,214
+1881,"TRT","Troy Trojans",85,240
+1881,"WOR","Worcester Ruby Legs",83,169
+1882,"BUF","Buffalo Bisons",84,228
+1882,"BLO","Baltimore Orioles",74,217
+1882,"ATL","Boston Red Caps",85,244
+1882,"CHC","Chicago White Stockings",84,262
+1882,"CBL","Cleveland Blues",84,261
+1882,"CIN","Cincinnati Red Stockings",80,204
